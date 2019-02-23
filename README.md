@@ -4,6 +4,11 @@ This is a python flask app that, that when hosted, can be used as an endpoint fo
 
 ## Development notes
 
+
+### Python package setup
+
+See: https://packaging.python.org/tutorials/packaging-projects/
+
 ```
 # install things required for development
 python3 -m pip install --user --upgrade setuptools wheel
