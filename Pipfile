@@ -5,8 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
+urlparse = "*"
 
 [packages]
+flask = "*"
+flask-pyoidc = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.6"
