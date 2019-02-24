@@ -16,8 +16,11 @@ work. Thank you [__@fmarco76__](https://github.com/fmarco76) and [__@stevenmirab
 Note that this is only a Flask application, you must use `gunicorn` or another
 WSGI compatible webserver to host it and setup TLS etc.
 
+> __WARNING__: Not yet tested with Discourse to function, but I'm working on it!
+
 ```sh
-pip install discourse-sso-oidc-bridge-consideratio
+# NOTE: Currently onnly on PyPI's test servers
+pip install --upgrade --index-url https://test.pypi.org/simple/ discourse-sso-oidc-bridge-consideratio
 ```
 
 ## Bridge Configuration
