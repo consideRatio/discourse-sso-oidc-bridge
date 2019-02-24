@@ -119,14 +119,6 @@ def test_authentication_state_available(data):
 
 def test_error_page_403():
     """Test the correct error code is propagated"""
-    with sso.app.test_request_context('/sso/auth',
-                                    method='GET',
-                                    environ_base={
-                                        'givenName': 'sam',
-                                        'sn': '',
-                                        'username': 'samsam',
-                                        'mail': 'test@test.com',
-                                        'eppn': 'hello123'}
-                                    ):
+    with sso.app.test_request_context('/sso/auth', method='GET'):
         resp = sso.attribuete_not_provided(None)
         assert resp[1] == 403
