@@ -15,7 +15,7 @@ import hmac
 import requests
 import json
 from urllib.parse import quote
-from .constants import ALL_ACCESSORS, BOOL_ACCESSORS, REQUIRED_ACCESSORS
+from .constants import ALL_ATTRIBUTES, BOOL_ATTRIBUTES, REQUIRED_ATTRIBUTES
 from .default import Config as DefaultConfig
 
 # Disable SSL certificate verification warning
@@ -35,9 +35,9 @@ app.config.from_pyfile(
 )
 
 # 3. From a dynamically configurable file location
-if os.environ.get('SSO_CONFIG_LOCATION'):
+if os.environ.get('CONFIG_LOCATION'):
     app.config.from_pyfile(
-        filename=os.environ.get('SSO_CONFIG_LOCATION'),
+        filename=os.environ.get('CONFIG_LOCATION'),
         silent=False
     )
 
@@ -133,47 +133,48 @@ def user_authz():
 
     attribute_map = app.config.get('USERINFO_SSO_MAP')
 
-    sso_accessors = {}
+    sso_attributes = {}
     userinfo = session['userinfo']
 
     # Check if the provided userinfo should be used to set information to be
     # passed to discourse. Do it by checking if the userinfo field is...
     # 1. explicitly mapped using the provided map 
-    # 2. if it can match one of the known accessors with discourse_ prefixed
-    # 3. if it can match one of the known accessors directly
+    # 2. if it can match one of the known attributes with discourse_ prefixed
+    # 3. if it can match one of the known attributes directly
     for userinfo_key, userinfo_value in userinfo.items():
+        attribute_key = attribute_map.get(userinfo_key)
 
-        accessor_key = attribute_map.get(userinfo_key)
-        print(userinfo_key, userinfo_value, accessor_key)
-        if accessor_key:
+        if attribute_key:
             pass
-        elif ("discourse_" + userinfo_key) in ALL_ACCESSORS:
-            accessor_key = "discourse_" + userinfo_key
-        elif userinfo_key in ALL_ACCESSORS:
-            accessor_key = userinfo_key
-        else:
-            print(userinfo_key)
+        elif ("discourse_" + userinfo_key) in ALL_ATTRIBUTES:
+            attribute_key = "discourse_" + userinfo_key
+        elif userinfo_key in ALL_ATTRIBUTES:
+            attribute_key = userinfo_key
 
-        if accessor_key:
-            if accessor_key in BOOL_ACCESSORS:
-                userinfo_value = "false" if str.lower(userinfo_value) in ['false', 'f', '0'] else "true"
-            sso_accessors[accessor_key] = userinfo_value
+        if attribute_key:
+            if attribute_key in BOOL_ATTRIBUTES:
+                userinfo_value = "false" if str.lower(str(userinfo_value)) in ['false', 'f', '0'] else "true"
+            sso_attributes[attribute_key] = userinfo_value
+    
+    # Check if we have a default value that should be utilized
+    default_sso_attributes = app.config.get('DEFAULT_SSO_ATTRIBUTES')
+    for default_attribute_key, default_attribute_value in default_sso_attributes.items():
+        if not default_attribute_key in sso_attributes:
+            sso_attributes[default_attribute_key] = default_attribute_value
 
-        print("---")
-
-    print(sso_accessors)
-
-    for required_accessor in REQUIRED_ACCESSORS:
-        if not sso_accessors.get(required_accessor):
-            app.logger.debug(f'{required_accessor} not found in userinfo: ' + json.dumps(session['userinfo']))
+    # Check if we got the required attributes
+    for required_attribute in REQUIRED_ATTRIBUTES:
+        if not sso_attributes.get(required_attribute):
+            app.logger.debug(f'{required_attribute} not found in userinfo: ' + json.dumps(session['userinfo']))
             abort(403)
 
-    app.logger.debug(f'Authenticating "{sso_accessors.get("external_id")}", named "{sso_accessors.get("name")}" with email: "{sso_accessors.get("email")}"')
+    # All systems are go!
+    app.logger.debug(f'Authenticating "{sso_attributes.get("external_id")}", named "{sso_attributes.get("name")}" with email: "{sso_attributes.get("email")}"')
 
+    # Construct the response inner query parameters
     query = session['discourse_nonce']
-    for sso_accessor_key, sso_accessor_value in sso_accessors.items():
-        query += f'&{sso_accessor_key}={quote(sso_accessor_value)}'
-
+    for sso_attribute_key, sso_attribute_value in sso_attributes.items():
+        query += f'&{sso_attribute_key}={quote(sso_attribute_value)}'
     app.logger.debug('Query string to return: %s', query)
 
     # Encode response

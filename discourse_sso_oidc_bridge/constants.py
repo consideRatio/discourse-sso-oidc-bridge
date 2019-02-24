@@ -1,7 +1,7 @@
 # UPDATED 24 Feb 2019 with values from:
 # https://github.com/discourse/discourse/blob/master/lib/single_sign_on.rb
 
-ALL_ACCESSORS = {
+ALL_ATTRIBUTES = {
     "add_groups",
     "admin",
     "avatar_force_update",
@@ -26,7 +26,7 @@ ALL_ACCESSORS = {
     "website",
 }
 
-BOOL_ACCESSORS = {
+BOOL_ATTRIBUTES = {
     "admin",
     "avatar_force_update",
     "locale_force_update",
@@ -35,7 +35,7 @@ BOOL_ACCESSORS = {
     "suppress_welcome_message",
 }
 
-REQUIRED_ACCESSORS = {
+REQUIRED_ATTRIBUTES = {
     "email",
     "external_id",
 }

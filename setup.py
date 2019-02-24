@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 import setuptools
 
 with open("README.md", "r") as fh:
@@ -5,7 +7,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="discourse-sso-oidc-bridge-consideratio",
-    version="0.0.2",
+    version="0.0.4",
     author="Erik Sundell",
     author_email="erik.i.sundell@gmail.com",
     description="This flask app can help setup Discourse SSO through OIDC.",
