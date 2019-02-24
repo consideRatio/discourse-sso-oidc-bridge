@@ -5,14 +5,13 @@
     <title>Attributes not provided</title>
 </head>
 <body>
-Your have been authenticated but are not provided the required attributes needed
-by Discourse. Perhaps the administrator needs to configure the user map?
+Required attributes was not provided. The nonce field is required as well as the
+following fields from userinfo are. The administrator of the
+discourse-sso-oidc-bridge could perhaps read the logs and setup a mapping using
+the the DISCOURSE_USER_MAP configuration option.
 <ul>
-    <li>external_id (mandatory)</li>
-    <li>name (mandatory)</li>
-    <li>username (mandatory)</li>
-    <li>email (mandatory)</li>
-    <li>groups (optional)</li>
+    <li>external_id (required)</li>
+    <li>email (required)</li>
 </ul>
 </body>
 </html>

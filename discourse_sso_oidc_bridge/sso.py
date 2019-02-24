@@ -16,6 +16,7 @@ import requests
 import json
 from urllib.parse import quote
 from . import __name__ as pkg_name
+from .constants import ALL_ACCESSORS, BOOL_ACCESSORS, REQUIRED_ACCESSORS
 
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
@@ -132,45 +133,38 @@ def user_authz():
 
     attribute_map = app.config.get('DISCOURSE_USER_MAP')
 
-    # FIXME: automate the mapping as there are plenty now within attribute_map
-    # - if map provided for <key>, assume that works or fail
-    # - else try with "discourse_<key>" and "<key>"
+    sso_accessors = {}
+    userinfo = session['userinfo']
 
-    # External ID
-    external_id = session['userinfo'].get(attribute_map['external_id'])
-    if not external_id:
-        app.logger.debug('"external_id" not found in userinfo: ' + json.dumps(session['userinfo']))
+    # Check if the provided userinfo should be used to set information to be
+    # passed to discourse. Do it by checking if the userinfo field is...
+    # 1. explicitly mapped using the provided map 
+    # 2. if it can match one of the known accessors with discourse_ prefixed
+    # 3. if it can match one of the known accessors directly
+    for userinfo_key, userinfo_value in userinfo.items():
+        accessor_key = userinfo.get(attribute_map.get(userinfo_key))
+        if accessor_key:
+            pass
+        elif ("discourse_" + userinfo_key) in ALL_ACCESSORS:
+            accessor_key = "discourse_" + userinfo_key
+        elif userinfo_key in ALL_ACCESSORS:
+            accessor_key = userinfo_key
+
+        if accessor_key:
+            if accessor_key in BOOL_ACCESSORS:
+                userinfo_value = "false" if str.lower(userinfo_value) in ['false', 'f', '0'] else "true"
+            sso_accessors[accessor_key] = userinfo_value
+
+    for required_accessor in REQUIRED_ACCESSORS:
+        app.logger.debug(f'{required_accessor} not found in userinfo: ' + json.dumps(session['userinfo']))
         abort(403)
 
-    # Display name
-    name = session['userinfo'].get(attribute_map['name'])
-    if not name:
-        app.logger.debug('"name" not found in userinfo: ' + json.dumps(session['userinfo']))
-        abort(403)
+    app.logger.debug(f'Authenticating "{sso_accessors.get("external_id")}", named "{sso_accessors.get("name")}" with email: "{sso_accessors.get("email")}"')
 
-    # Username
-    username = session['userinfo'].get(attribute_map['username'])
-    if not username:
-        app.logger.debug('"username" not found in userinfo: ' + json.dumps(session['userinfo']))
-        abort(403)
+    query = session['discourse_nonce']
+    for sso_accessor_key, sso_accessor_value in sso_accessors:
+        query += f'&{sso_accessor_key}={quote(sso_accessor_value)}'
 
-    # Email
-    email = session['userinfo'].get(attribute_map['email'])
-    if not username:
-        app.logger.debug('"email" not found in userinfo: ' + json.dumps(session['userinfo']))
-        abort(403)
-
-    app.logger.debug('Authenticating "%s" with username "%s" and email "%s"', name, username, email)
-
-    # Automate the build of the response
-    # FIXME: add possibility to provide groups!
-    query = (
-        session['discourse_nonce'] +
-        '&name=' + quote(name) +
-        '&username=' + quote(username) +
-        '&email=' + quote(email) +
-        '&external_id=' + quote(external_id)
-    )
     app.logger.debug('Query string to return: %s', query)
 
     # Encode response

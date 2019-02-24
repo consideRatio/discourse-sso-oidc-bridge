@@ -5,12 +5,12 @@ verify_ssl = true
 
 [dev-packages]
 pytest = "*"
-urlparse = "*"
+urllib3 = "*"
+discourse-sso-oidc-bridge-consideratio = {editable = true,path = "."}
 
 [packages]
 flask = "*"
 flask-pyoidc = "*"
-gunicorn = "*"
 
 [requires]
 python_version = "3.6"
