@@ -15,8 +15,8 @@ import hmac
 import requests
 import json
 from urllib.parse import quote
-from . import __name__ as pkg_name
 from .constants import ALL_ACCESSORS, BOOL_ACCESSORS, REQUIRED_ACCESSORS
+from .default import Config as DefaultConfig
 
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
@@ -26,7 +26,7 @@ app = Flask(__name__)
 # Load application config from various sources
 # ------------------------------------------------------------------------------
 # 1. Defaults from this package
-app.config.from_object(pkg_name + '.default.Config')
+app.config.from_object(DefaultConfig)
 
 # 2. From a config.py file in the application directory
 app.config.from_pyfile(
@@ -131,7 +131,7 @@ def user_authz():
         app.logger.debug('Discourse nonce not found in session')
         abort(403)
 
-    attribute_map = app.config.get('DISCOURSE_USER_MAP')
+    attribute_map = app.config.get('USERINFO_SSO_MAP')
 
     sso_accessors = {}
     userinfo = session['userinfo']
@@ -142,27 +142,36 @@ def user_authz():
     # 2. if it can match one of the known accessors with discourse_ prefixed
     # 3. if it can match one of the known accessors directly
     for userinfo_key, userinfo_value in userinfo.items():
-        accessor_key = userinfo.get(attribute_map.get(userinfo_key))
+
+        accessor_key = attribute_map.get(userinfo_key)
+        print(userinfo_key, userinfo_value, accessor_key)
         if accessor_key:
             pass
         elif ("discourse_" + userinfo_key) in ALL_ACCESSORS:
             accessor_key = "discourse_" + userinfo_key
         elif userinfo_key in ALL_ACCESSORS:
             accessor_key = userinfo_key
+        else:
+            print(userinfo_key)
 
         if accessor_key:
             if accessor_key in BOOL_ACCESSORS:
                 userinfo_value = "false" if str.lower(userinfo_value) in ['false', 'f', '0'] else "true"
             sso_accessors[accessor_key] = userinfo_value
 
+        print("---")
+
+    print(sso_accessors)
+
     for required_accessor in REQUIRED_ACCESSORS:
-        app.logger.debug(f'{required_accessor} not found in userinfo: ' + json.dumps(session['userinfo']))
-        abort(403)
+        if not sso_accessors.get(required_accessor):
+            app.logger.debug(f'{required_accessor} not found in userinfo: ' + json.dumps(session['userinfo']))
+            abort(403)
 
     app.logger.debug(f'Authenticating "{sso_accessors.get("external_id")}", named "{sso_accessors.get("name")}" with email: "{sso_accessors.get("email")}"')
 
     query = session['discourse_nonce']
-    for sso_accessor_key, sso_accessor_value in sso_accessors:
+    for sso_accessor_key, sso_accessor_value in sso_accessors.items():
         query += f'&{sso_accessor_key}={quote(sso_accessor_value)}'
 
     app.logger.debug('Query string to return: %s', query)

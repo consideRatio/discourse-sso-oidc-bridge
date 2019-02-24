@@ -38,7 +38,8 @@ def data():
             'sub': 'john_doe',
             'name': 'John Doe',
             'iat': 1550961213,
-            'exp': 1550964813},
+            'exp': 1550964813
+        },
         # INSPECT id_token_jwt at:
         # https://jwt.io/#debugger-io?token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJpc3N1ZXIxIiwiYXVkIjoiY2xpZW50MSIsInN1YiI6ImpvaG5fZG9lIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTUwOTYxMjEzLCJleHAiOjE1NTA5NjQ4MTN9.eiBu_D5m4vPVd11C-phlKkHha2VPlmaRQPTuV49QTIk
         'id_token_jwt': 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9'
@@ -113,7 +114,7 @@ def test_authentication_state_available(data):
         UserSession(req.session, provider_name='default').update(**data)
         resp = sso.user_authz()
         assert resp.status_code == 302
-        assert resp.location == 'http://discourse.example.com/session/sso_login?sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImbmFtZT1Kb2huJTIwRG9lJnVzZXJuYW1lPWpvaG5fZG9lJmVtYWlsPWpvaG5fZG9lJTQwZXhhbXBsZS5jb20mZXh0ZXJuYWxfaWQ9am9obl9kb2U%3D&sig=0c3715ed051f39ff2f9facdab30f9bca68908dc396c575b93608456de2f066a4'
+        assert resp.location == 'http://discourse.example.com/session/sso_login?sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImZXh0ZXJuYWxfaWQ9am9obl9kb2UmbmFtZT1Kb2huJTIwRG9lJmVtYWlsPWpvaG5fZG9lJTQwZXhhbXBsZS5jb20mdXNlcm5hbWU9am9obl9kb2U%3D&sig=240679cc6a8a56fa47d6db681868466e1e166befa794d87a774049185a299598'
 
 
 def test_error_page_403():
