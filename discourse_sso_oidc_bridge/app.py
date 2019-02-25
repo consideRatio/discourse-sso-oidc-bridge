@@ -21,7 +21,7 @@ from .default_config import DefaultConfig
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
 
-def create_app():
+def create_app(config):
     app = Flask(__name__, instance_relative_config=True)
 
     # Load application config from various sources
@@ -42,7 +42,11 @@ def create_app():
             silent=False
         )
     
-    # 4. Load some final computed config
+    # 4. Testing config
+    if config:
+        app.config.from_mapping(config)
+    
+    # 5. Load some final computed config
     #    NOTE: This is placed here as it relies on other config values that
     #          may be configured after the user provided config for example.
     oidc_logout_redirect_uri = os.environ.get('OIDC_LOGOUT_REDIRECT_URI', 'https://' + app.config['SERVER_NAME'] + '/logout')
@@ -70,7 +74,6 @@ def create_app():
 
     # The client metadata will be consumed no matter what...
     # https://github.com/zamzterz/Flask-pyoidc#dynamic-provider-configuration
-    print(app.config)
     client_metadata = ClientMetadata(**app.config['OIDC_CLIENT_METADATA'])
 
     # ... but if explicit OIDC provider information is provided, we use that
@@ -112,7 +115,9 @@ def create_app():
     def payload_check():
         """
         Verify the payload and signature coming from a Discourse server and if
-        correct redirect to the authentication page.
+        correct redirect to the authentication page after saving the nonce in
+        the session as discourse_nonce.
+        
         :return: The redirection page to the authentication page
         """
 
@@ -141,12 +146,12 @@ def create_app():
         session['discourse_nonce'] = decoded_msg  # This can't just be 'nonce' as Flask-pyoidc will steamroll it
 
         # Redirect to authorization endpoint
-        return redirect(url_for('user_authz'))
+        return redirect(url_for('sso_auth'))
 
 
     @app.route('/sso/auth')
     @auth.oidc_auth('default')
-    def user_authz():
+    def sso_auth():
         """
         Read the user attributes provided by Flask-pyoidc and
         create the payload to send to Discourse.
@@ -155,7 +160,7 @@ def create_app():
 
         # Check to make sure we have a valid session
         if 'discourse_nonce' not in session:
-            app.logger.debug('Discourse nonce not found in session')
+            app.logger.debug('Discourse nonce not found in session, arriving to /sso/auth without coming from /sso/login?')
             abort(403)
 
         attribute_map = app.config.get('USERINFO_SSO_MAP')
@@ -184,9 +189,10 @@ def create_app():
                 sso_attributes[attribute_key] = userinfo_value
         
         # Check if we have a default value that should be utilized
+        print(sso_attributes)
         default_sso_attributes = app.config.get('DEFAULT_SSO_ATTRIBUTES')
         for default_attribute_key, default_attribute_value in default_sso_attributes.items():
-            if not default_attribute_key in sso_attributes:
+            if default_attribute_key not in sso_attributes:
                 sso_attributes[default_attribute_key] = default_attribute_value
 
         # Check if we got the required attributes
