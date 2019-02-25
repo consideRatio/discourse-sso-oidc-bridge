@@ -13,8 +13,14 @@ class Config(object):
     IP = os.environ.get('IP', '0.0.0.0')
     PORT = int(os.environ.get('PORT', '8080'))
     
-    # NOTE: Very important that SERVER_NAME is set to whatever your browser
-    # will pass to it in the host header or you will end up with 404.
+    # IMPORTANT: If you leave SERVER_NAME set to something that isn't
+    # how you access it from a browser, then a 'Host' header will not
+    # match a rule setup how to redirect the traffic. So you will end
+    # up will a 404 response.
+    # To fiddle around with this, you can try:
+    # curl -H 'Host: discourse-sso.example.com' http://localhost:8080/
+    # curl -H 'Host: something.else.com' http://localhost:8080/
+    # If it works, you should be redirected (302) rather than get 404.
     SERVER_NAME = os.environ.get('SERVER_NAME', 'discourse-sso.example.com')
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dummy_secret_key')
 
@@ -45,6 +51,7 @@ class Config(object):
         'post_logout_redirect_uris': [OIDC_LOGOUT_REDIRECT_URI]
     }
 
+    # FIXME: This must work if other config is loaded first or not...
     OIDC_AUTH_REQUEST_PARAMS = json.loads(
         os.environ.get('OIDC_AUTH_REQUEST_PARAMS',
             f"""
