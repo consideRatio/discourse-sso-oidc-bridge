@@ -1,6 +1,9 @@
 
-# docker build -t discourse-sso-oidc-bridge:0.0.4 .
+# consideratio/discourse-sso-oidc-bridge:<PyPI version>
 FROM tiangolo/uwsgi-nginx-flask:python3.7
+
+ENV LOCAL_PORT=8080
+EXPOSE ${LOCAL_PORT}
 
 # COPY ./discourse_sso_oidc_bridge /app/pkg/discourse_sso_oidc_bridge
 # COPY ./README.md /app/pkg

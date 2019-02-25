@@ -17,7 +17,6 @@ import json
 from urllib.parse import quote
 from .constants import ALL_ATTRIBUTES, BOOL_ATTRIBUTES, REQUIRED_ATTRIBUTES
 from .default_config import DefaultConfig
-from .advanced_config import DelayedConfig
 
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
@@ -43,21 +42,40 @@ def create_app():
             silent=False
         )
     
-    # 4. From the delayed configuration
-    # FIXME: must be able to access ... GAH this is bad...
-    app.config.from_object(DelayedConfig)
+    # 4. Load some final computed config
+    #    NOTE: This is placed here as it relies on other config values that
+    #          may be configured after the user provided config for example.
+    oidc_logout_redirect_uri = os.environ.get('OIDC_LOGOUT_REDIRECT_URI', 'https://' + app.config['SERVER_NAME'] + '/logout')
+    app.config.from_mapping({
+        'OIDC_LOGOUT_REDIRECT_URI': oidc_logout_redirect_uri,
+        'OIDC_CLIENT_METADATA': {
+            'client_id': app.config['OIDC_CLIENT_ID'],
+            'client_secret': app.config['OIDC_CLIENT_SECRET'],
+            'post_logout_redirect_uris': str.split(oidc_logout_redirect_uri, ",")
+        },
+        'OIDC_AUTH_REQUEST_PARAMS': json.loads(
+            os.environ.get('OIDC_AUTH_REQUEST_PARAMS',
+                f"""
+                {{
+                    "scope": {json.dumps(str.split(app.config['OIDC_SCOPE'], ","))}
+                }}
+                """
+            )
+        ),
+    })
 
 
     # Initialize OpenID Connect extension
     # ------------------------------------------------------------------------------
 
-    # If explicit OIDC provider information is provided, we use that instead of the
-    # information dynamically provided by the .well-known/openid-configuration
-    # endpoint.
-
+    # The client metadata will be consumed no matter what...
     # https://github.com/zamzterz/Flask-pyoidc#dynamic-provider-configuration
+    print(app.config)
     client_metadata = ClientMetadata(**app.config['OIDC_CLIENT_METADATA'])
 
+    # ... but if explicit OIDC provider information is provided, we use that
+    # instead of the information dynamically provided by the
+    # .well-known/openid-configuration endpoint.
     if app.config['OIDC_PROVIDER_METADATA']:
         provider_metadata = ProviderMetadata(**app.config['OIDC_PROVIDER_METADATA'])
         provider = ProviderConfiguration(

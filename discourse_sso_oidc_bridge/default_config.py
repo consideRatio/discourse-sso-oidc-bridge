@@ -37,6 +37,12 @@ class DefaultConfig(object):
     OIDC_CLIENT_SECRET = os.environ.get('OIDC_CLIENT_SECRET', 'dummy_client_secret')
     OIDC_SCOPE = os.environ.get('OIDC_SCOPE', 'openid,profile')
 
+    # Advanced OpenID Connect config: probably best to ignore...
+    # --------------------------------------------------------------------------
+    # For _static_ provider configuration (not recommended)
+    # https://github.com/zamzterz/Flask-pyoidc#static-provider-configuration
+    OIDC_PROVIDER_METADATA = json.loads(os.environ.get('OIDC_PROVIDER_METADATA', '{}'))
+
     ###########################
     # Discourse Configuration #
     ###########################
@@ -51,17 +57,15 @@ class DefaultConfig(object):
     # Bridge Configuration #
     ########################
 
-    # You can provide a file path for an additional config file to be consumed.
-    # Example: /var/discourse-sso-oidc-bridge/config.py
+    # You can provide a file path for an additional config file to be consumed
+    # by setting the environment variable CONFIG_LOCATION.
+    # Example: CONFIG_LOCATION='/var/discourse-sso-oidc-bridge/config.py'
     # Example content of the provided config:
     #
     # DISCOURSE_URL = "https://discourse."
     # OIDC_ISSUER = "https://my-okta-instance.okta.com/"
     # OIDC_CLIENT_ID = "ac8t5ngz91"
     # OIDC_CLIENT_SECRET = "lkjasdlfkhj21l3hjtkgjbsdv"
-
-    # NOTE: It is only written out here for reference...
-    CONFIG_LOCATION = os.environ.get('CONFIG_LOCATION', '')
 
     # Attribute to read from the environment after user validation. Pass a valid
     # JSON object as a string where keys are userinfo attributes from OIDC and
