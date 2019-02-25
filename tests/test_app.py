@@ -1,5 +1,5 @@
 """
-SSO Application tests
+Tests to verify most of the functionality
 """
 
 from contextlib import contextmanager

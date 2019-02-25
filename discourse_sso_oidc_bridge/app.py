@@ -1,7 +1,8 @@
 """
 SSO FLASK Application for Discourse
-The configuration file is defined with the variable "DISCOURSE_SSO_CONFIG",
-for the most significant values look at the sso/default.py file
+A custom config file can be provided at a location that can be set with the
+environment variable CONFIG_LOCATION.
+For the relevant configuration options, inspect default_config.py.
 """
 
 from flask import abort, Flask, redirect, render_template, request, url_for, session
@@ -189,7 +190,6 @@ def create_app(config):
                 sso_attributes[attribute_key] = userinfo_value
         
         # Check if we have a default value that should be utilized
-        print(sso_attributes)
         default_sso_attributes = app.config.get('DEFAULT_SSO_ATTRIBUTES')
         for default_attribute_key, default_attribute_value in default_sso_attributes.items():
             if default_attribute_key not in sso_attributes:
