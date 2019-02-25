@@ -22,7 +22,7 @@ from .default import Config as DefaultConfig
 requests.packages.urllib3.disable_warnings()
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__, instance_relative_config=True)
 
     # Load application config from various sources
     # ------------------------------------------------------------------------------

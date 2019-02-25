@@ -13,6 +13,8 @@ class Config(object):
     IP = os.environ.get('IP', '0.0.0.0')
     PORT = int(os.environ.get('PORT', '8080'))
     
+    # NOTE: Very important that SERVER_NAME is set to whatever your browser
+    # will pass to it in the host header or you will end up with 404.
     SERVER_NAME = os.environ.get('SERVER_NAME', 'discourse-sso.example.com')
     SECRET_KEY = os.environ.get('SECRET_KEY', 'dummy_secret_key')
 

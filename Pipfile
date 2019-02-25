@@ -9,8 +9,8 @@ urllib3 = "*"
 discourse-sso-oidc-bridge-consideratio = {editable = true,path = "."}
 
 [packages]
-flask = "*"
-flask-pyoidc = "*"
+flask = "=1.0.*"
+flask-pyoidc = "=2.0.*"
 
 [requires]
 python_version = "3.6"

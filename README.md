@@ -20,7 +20,7 @@ WSGI compatible webserver to host it and setup TLS etc.
 
 ```sh
 # NOTE: Currently onnly on PyPI's test servers
-pip install --upgrade --index-url https://test.pypi.org/simple/ discourse-sso-oidc-bridge-consideratio
+pip install --upgrade discourse-sso-oidc-bridge-consideratio
 ```
 
 ## Bridge Configuration
@@ -84,20 +84,15 @@ example could be `https://discourse-sso.example.com/redirect_uri`.
     pip install --upgrade twine
     ```
 
-3. Build the package
+3. Build and upload the package
 
     ```sh
     ./setup.py sdist bdist_wheel
+    twine upload --skip-existing --username consideratio dist/*
     ```
 
-4. Upload the package
+4. Test install the package
 
     ```sh
-    twine upload --skip-existing --repository-url https://test.pypi.org/legacy/ dist/*
-    ```
-
-5. Test install the package
-
-    ```sh
-    pip install --upgrade --index-url https://test.pypi.org/simple/ discourse-sso-oidc-bridge-consideratio
+    pip install --upgrade discourse-sso-oidc-bridge-consideratio
     ```
