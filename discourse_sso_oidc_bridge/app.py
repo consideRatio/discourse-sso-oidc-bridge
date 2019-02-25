@@ -16,7 +16,8 @@ import requests
 import json
 from urllib.parse import quote
 from .constants import ALL_ATTRIBUTES, BOOL_ATTRIBUTES, REQUIRED_ATTRIBUTES
-from .default import Config as DefaultConfig
+from .default_config import DefaultConfig
+from .advanced_config import DelayedConfig
 
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
@@ -41,6 +42,10 @@ def create_app():
             filename=os.environ.get('CONFIG_LOCATION'),
             silent=False
         )
+    
+    # 4. From the delayed configuration
+    # FIXME: must be able to access ... GAH this is bad...
+    app.config.from_object(DelayedConfig)
 
 
     # Initialize OpenID Connect extension

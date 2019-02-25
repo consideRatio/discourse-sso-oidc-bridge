@@ -4,7 +4,7 @@ Default configuration for FLASK app
 
 import os, json
 
-class Config(object):
+class DefaultConfig(object):
     #######################
     # Flask Configuration #
     #######################
@@ -35,39 +35,14 @@ class Config(object):
 
     OIDC_CLIENT_ID = os.environ.get('OIDC_CLIENT_ID', 'dummy_client_id')
     OIDC_CLIENT_SECRET = os.environ.get('OIDC_CLIENT_SECRET', 'dummy_client_secret')
-    OIDC_SCOPE = os.environ.get('OIDC_CLIENT_SECRET', 'openid,profile')
-
-    # Advanced OpenID Connect config: probably best to ignore...
-    # --------------------------------------------------------------------------
-    OIDC_LOGOUT_REDIRECT_URI = os.environ.get('OIDC_LOGOUT_REDIRECT_URI', 'https://' + SERVER_NAME + '/logout')
-
-    # For _static_ provider configuration (not recommended)
-    # https://github.com/zamzterz/Flask-pyoidc#static-provider-configuration
-    OIDC_PROVIDER_METADATA = json.loads(os.environ.get('OIDC_PROVIDER_METADATA', '{}'))
- 
-    OIDC_CLIENT_METADATA = {
-        'client_id': OIDC_CLIENT_ID,
-        'client_secret': OIDC_CLIENT_SECRET,
-        'post_logout_redirect_uris': [OIDC_LOGOUT_REDIRECT_URI]
-    }
-
-    # FIXME: This must work if other config is loaded first or not...
-    OIDC_AUTH_REQUEST_PARAMS = json.loads(
-        os.environ.get('OIDC_AUTH_REQUEST_PARAMS',
-            f"""
-            {{
-                "scope": {json.dumps(str.split(OIDC_SCOPE, ","))}
-            }}
-            """
-        )
-    )
+    OIDC_SCOPE = os.environ.get('OIDC_SCOPE', 'openid,profile')
 
     ###########################
     # Discourse Configuration #
     ###########################
 
     # Discourse URL to send the user back
-    DISCOURSE_URL = os.environ.get('DISCOURSE_URL', 'http://discourse.example.com')
+    DISCOURSE_URL = os.environ.get('DISCOURSE_URL', 'https://discourse.example.com')
 
     # Secret key shared with the Discourse server
     DISCOURSE_SECRET_KEY = os.environ.get('DISCOURSE_SECRET_KEY', 'dummy_discourse_secret_key')
@@ -84,6 +59,8 @@ class Config(object):
     # OIDC_ISSUER = "https://my-okta-instance.okta.com/"
     # OIDC_CLIENT_ID = "ac8t5ngz91"
     # OIDC_CLIENT_SECRET = "lkjasdlfkhj21l3hjtkgjbsdv"
+
+    # NOTE: It is only written out here for reference...
     CONFIG_LOCATION = os.environ.get('CONFIG_LOCATION', '')
 
     # Attribute to read from the environment after user validation. Pass a valid
