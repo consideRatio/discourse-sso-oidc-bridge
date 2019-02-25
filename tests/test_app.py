@@ -118,7 +118,7 @@ def test_authentication_state_not_available(client, discourse_nonce):
 
     res = client.get('/sso/auth')
     assert res.status_code == 302
-    assert '?client_id=dummy_client_id&response_type=code&scope=openid+profile&redirect_uri=http%3A%2F%2Fdiscourse-sso.example.com%2Fredirect_uri' in res.location
+    assert 'client_id=dummy_client_id&response_type=code&scope=openid+profile&redirect_uri=http%3A%2F%2Fdiscourse-sso.example.com%2Fredirect_uri' in urlparse(res.location).query
 
 
 def test_authentication_state_available(client, discourse_nonce, auth_data):
@@ -129,4 +129,18 @@ def test_authentication_state_available(client, discourse_nonce, auth_data):
 
     res = client.get('/sso/auth')
     assert res.status_code == 302
-    assert res.location == 'https://discourse.example.com/session/sso_login?sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImZW1haWw9am9obl9kb2UlNDBleGFtcGxlLmNvbSZuYW1lPUpvaG4lMjBEb2UmdXNlcm5hbWU9am9obl9kb2UmZXh0ZXJuYWxfaWQ9am9obl9kb2U%3D&sig=4e4617a08d20f8380e10ba801879e79700cd14051da6341fc93c8563d50a155e'
+    assert urlparse(res.location).path == '/session/sso_login'
+    assert urlparse(res.location).query == 'sso=bm9uY2U9Y2I2ODI1MWVlZmI1MjExZTU4YzAwZmYxMzk1ZjBjMGImZW1haWw9am9obl9kb2UlNDBleGFtcGxlLmNvbSZuYW1lPUpvaG4lMjBEb2UmdXNlcm5hbWU9am9obl9kb2UmZXh0ZXJuYWxfaWQ9am9obl9kb2U%3D&sig=4e4617a08d20f8380e10ba801879e79700cd14051da6341fc93c8563d50a155e'
+    
+
+def test_configured_scope(client, discourse_nonce, auth_data):
+    """Test the authentication are properly send to Discourse"""
+    with client.session_transaction() as session:
+        session.update(discourse_nonce)
+        session.update(auth_data)
+    
+    client.
+
+    res = client.get('/sso/auth')
+    assert res.status_code == 302
+    assert urlparse(res.location).path == ''
