@@ -1,0 +1,33 @@
+CHANGES
+=======
+
+0.1.0
+-----
+
+* Reworked Dockerization
+* Update docstrings
+* Redundant LICENCE stuff removed
+* Lots of tests added
+* Finetune tests
+* Fixed configuration issues
+* Things i need to revert soon..
+* SERVER\_NAME was very important ^^
+* A lot of work to Dockerize it functionally..
+* Started using create\_app() for Dockerization
+* Add note about this not being ready for use
+* Ready for test deployment
+* Cleanup old test
+* Too many changes in one commit..
+* Fix dependencies etc
+* Define known discourse sso attributes
+* Standing on the shoulders of giants
+* Refactor structure
+* README.md details
+* Update package info
+* Update README with PyPI dev instructions
+* Initialize .gitignore
+* Initialize pipenv
+* Update README.md preliminary
+* Prelim setup.py adjustments
+* Boilerplate setup.py
+* Initial python package foundation

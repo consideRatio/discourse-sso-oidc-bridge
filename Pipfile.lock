@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "2ff847d491abdbf98a509eb2f007505036db662c70516ad17e20045f5a0a7b80"
+            "sha256": "9151403ab330242e7ac7edbe8688fd2b6eea10c28c803f9d716ff6b5bd82d130"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -297,10 +297,6 @@
             ],
             "version": "==18.2.0"
         },
-        "discourse-sso-oidc-bridge-consideratio": {
-            "editable": true,
-            "path": "."
-        },
         "more-itertools": {
             "hashes": [
                 "sha256:0125e8f60e9e031347105eb1682cef932f5e97d7b9a1a28d9bf00c22a5daef40",
@@ -308,6 +304,14 @@
             ],
             "markers": "python_version > '2.7'",
             "version": "==6.0.0"
+        },
+        "pbr": {
+            "hashes": [
+                "sha256:a7953f66e1f82e4b061f43096a4bcc058f7d3d41de9b94ac871770e8bdd831a2",
+                "sha256:d717573351cfe09f49df61906cd272abaa759b3e91744396b804965ff7bff38b"
+            ],
+            "index": "pypi",
+            "version": "==5.1.2"
         },
         "pluggy": {
             "hashes": [

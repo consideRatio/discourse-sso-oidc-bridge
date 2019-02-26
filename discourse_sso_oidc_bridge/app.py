@@ -22,7 +22,7 @@ from .default_config import DefaultConfig
 # Disable SSL certificate verification warning
 requests.packages.urllib3.disable_warnings()
 
-def create_app(config):
+def create_app(config=None):
     app = Flask(__name__, instance_relative_config=True)
 
     # Load application config from various sources
@@ -254,3 +254,5 @@ def create_app(config):
         return render_template('403.html'), 403
 
     return app
+
+app = create_app()
