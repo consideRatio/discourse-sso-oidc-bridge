@@ -103,6 +103,8 @@ def create_app(config=None):
     )
 
 
+    # The /health endpoint returns a JSON string like...
+    # {"hostname": "a3731af16461", "status": "success", "timestamp": 1551186453.8854501, "results": []}
     health = HealthCheck(app, "/health")
 
 
