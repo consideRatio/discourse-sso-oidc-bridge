@@ -99,16 +99,15 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
 
     # Build the package
     pipenv run python setup.py bdist_wheel
-    rm requirements.txt
 
     # Upload the package to PyPI
-    twine upload --skip-existing --username consideratio dist/*
+    pipenv run twine upload --skip-existing --username consideratio dist/*
     ```
 
 2. Build, run, and push a Docker image
 
     ```sh
-    TAG=0.1.0
+    TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
     docker run --rm consideratio/discourse-sso-oidc-bridge:$TAG
     docker push consideratio/discourse-sso-oidc-bridge:$TAG
