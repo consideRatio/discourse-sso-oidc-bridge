@@ -115,4 +115,4 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
 
 ## Deployment notes
 
-I have deployed this using a simpler Helm chart, I'd like to open source this as well for a complete solution. Show some interest and I'll get it done.
+I have deployed this using a simpler not published Helm chart. I'm happy to open source this as well for a complete solution. But to avoid overworking something that few has interest for it in I'd appreciate if you showed interest in this by emailing me or opening an issue or similar.
