@@ -5,7 +5,7 @@ environment variable CONFIG_LOCATION.
 For the relevant configuration options, inspect default_config.py.
 """
 
-from flask import abort, Flask, redirect, render_template, request, url_for, session
+from flask import abort, Flask, redirect, render_template, request, url_for, session, jsonify
 from flask_pyoidc.flask_pyoidc import OIDCAuthentication
 from flask_pyoidc.provider_configuration import ProviderConfiguration, ProviderMetadata, ClientMetadata
 
@@ -107,6 +107,12 @@ def create_app(config=None):
     # {"hostname": "a3731af16461", "status": "success", "timestamp": 1551186453.8854501, "results": []}
     health = HealthCheck(app, "/health")
 
+    # If an OAuth error response is received, either in the authentication or
+    # token response, it will be passed to the "error view".
+    @auth.error_view
+    def error(error=None, error_description=None):
+        return json.jsonify({'error': error, 'message': error_description})
+
 
     @app.route('/')
     def index():
@@ -133,6 +139,7 @@ def create_app(config=None):
         signature = request.args.get('sig', '')
 
         if not payload or not signature:
+            app.logger.info('/sso/login -> 400: missing payload="%s" or signature="%s"', payload, signature)
             abort(400)
 
         app.logger.debug('Request to login with payload="%s" signature="%s"', payload, signature)
@@ -146,6 +153,7 @@ def create_app(config=None):
         app.logger.debug('Calculated hash: %s', dig)
 
         if dig != signature:
+            app.logger.info('/sso/login -> 400: dig / signature mismatch. dig="%s" and signature="%s"', dig, signature)
             abort(400)
 
         # Decode the payload and store in session
@@ -167,7 +175,7 @@ def create_app(config=None):
 
         # Check to make sure we have a valid session
         if 'discourse_nonce' not in session:
-            app.logger.debug('Discourse nonce not found in session, arriving to /sso/auth without coming from /sso/login?')
+            app.logger.info('/sso/auth -> 403: discourse_nonce not found in session, arriving here without coming from /sso/login?')
             abort(403)
 
         attribute_map = app.config.get('USERINFO_SSO_MAP')
@@ -204,7 +212,7 @@ def create_app(config=None):
         # Check if we got the required attributes
         for required_attribute in REQUIRED_ATTRIBUTES:
             if not sso_attributes.get(required_attribute):
-                app.logger.debug(f'{required_attribute} not found in userinfo: ' + json.dumps(session['userinfo']))
+                app.logger.info(f'/sso/auth -> 403: {required_attribute} not found in userinfo: ' + json.dumps(session['userinfo']))
                 abort(403)
 
         # All systems are go!
@@ -257,6 +265,7 @@ def create_app(config=None):
         not provide the requested attributes
         :type error: object
         """
+        app.logger.info(f'403: error: "{error}"')
         return render_template('403.html'), 403
 
     return app

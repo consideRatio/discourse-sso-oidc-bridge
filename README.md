@@ -112,3 +112,7 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
     docker run --rm -p 8080:8080 consideratio/discourse-sso-oidc-bridge:$TAG
     docker push consideratio/discourse-sso-oidc-bridge:$TAG
     ```
+
+## Deployment notes
+
+I have deployed this using a simpler Helm chart, I'd like to open source this as well for a complete solution. Show some interest and I'll get it done.
