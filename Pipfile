@@ -4,13 +4,16 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [dev-packages]
+pbr = "*"
 pytest = "*"
+setuptools = "*"
+twine = "*"
 urllib3 = "*"
-discourse-sso-oidc-bridge-consideratio = {editable = true,path = "."}
+wheel = "*"
 
 [packages]
-flask = "=1.0.*"
-flask-pyoidc = "=2.0.*"
+flask = "~=1.0"
+flask-pyoidc = "~=2.0"
 
 [requires]
 python_version = "3.6"

@@ -11,6 +11,8 @@ work. Thank you [__@fmarco76__](https://github.com/fmarco76) and [__@stevenmirab
 - https://github.com/fmarco76/DiscourseSSO
 - https://github.com/ComputerScienceHouse/DiscourseOIDC
 
+I also did some refinements thanks to [__@greut__](https://github.com/greut) this [Medium article](https://medium.com/@greut/building-a-python-package-a-docker-image-using-pipenv-233d8793b6cc).
+
 ## Installation
 
 Note that this is only a Flask application, you must use `gunicorn` or another
@@ -44,8 +46,8 @@ This is the common configuration that, [default.py](discourse-sso-oidc-bridge/de
 ## OIDC Provider Configuration
 
 You must have a `client_id` and `client_secret` from your OIDC issuer. The
-issuer must also accept redirecting to `<bridge_url>/redirect_uri`, which for
-example could be `https://discourse-sso.example.com/redirect_uri`.
+issuer must also accept redirecting back to `<bridge_url>/redirect_uri`, which
+for example could be `https://discourse-sso.example.com/redirect_uri`.
 
 ## Development Notes
 
@@ -59,40 +61,55 @@ example could be `https://discourse-sso.example.com/redirect_uri`.
     pip install pipenv
     ```
 
-3. Enter the virtual environment
+3. Setup a virtual development environment
 
     ```sh
     pipenv install --dev
+
+    # Optionally enter the environment
     pipenv shell
     ```
 
-4. Run the tests
+4. Run tests
 
     ```sh
-    pytest
+    pipenv run pytest
     ```
 
 ### Build and upload a PyPI release
 
-1. Update the version in setup.py
-
-2. Get the build tools
+1. Test, build and upload the package
 
     ```sh
-    # install things required for development
-    pip install --upgrade setuptools wheel
-    pip install --upgrade twine
-    ```
+    # Make sure you are up to date with what you have declared to require
+    pipenv install --dev
 
-3. Build and upload the package
+    # Update changelog, fix requirements, etc.
+    pipenv lock -r > requirements.txt
 
-    ```sh
-    ./setup.py sdist bdist_wheel
+    # Run tests
+    pipenv run pytest
+
+    # Optionally commit and tag to influence the PyPI version
+    # PBR will look for the latest tag and then append development
+    # versions based on your git commits since the latest tag.
+    git add .
+    git commit
+    git tag -a <package-version>
+
+    # Build the package
+    pipenv run python setup.py bdist_wheel
+    rm requirements.txt
+
+    # Upload the package to PyPI
     twine upload --skip-existing --username consideratio dist/*
     ```
 
-4. Test install the package
+2. Build, run, and push a Docker image
 
     ```sh
-    pip install --upgrade discourse-sso-oidc-bridge-consideratio
+    TAG=0.1.0
+    docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
+    docker run --rm consideratio/discourse-sso-oidc-bridge:$TAG
+    docker push consideratio/discourse-sso-oidc-bridge:$TAG
     ```

@@ -8,11 +8,11 @@ from flask import url_for
 import pytest
 from base64 import b64decode
 from urllib.parse import urlparse, unquote
-from discourse_sso_oidc_bridge.app import create_app
+from discourse_sso_oidc_bridge import create_app
 
 @pytest.fixture
 def client():
-    app = create_app({})
+    app = create_app()
 
     # Flask provides a way to test your application by exposing the Werkzeug test Client
     # and handling the context locals for you.
