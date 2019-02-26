@@ -16,6 +16,7 @@ import hmac
 import requests
 import json
 from urllib.parse import quote
+from healthcheck import HealthCheck
 from .constants import ALL_ATTRIBUTES, BOOL_ATTRIBUTES, REQUIRED_ATTRIBUTES
 from .default_config import DefaultConfig
 
@@ -100,6 +101,9 @@ def create_app(config=None):
         },
         app=app,
     )
+
+
+    health = HealthCheck(app, "/health")
 
 
     @app.route('/')
