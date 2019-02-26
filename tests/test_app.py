@@ -2,8 +2,9 @@
 Tests to verify most of the functionality
 """
 
-from contextlib import contextmanager
 import time
+import json
+from contextlib import contextmanager
 from flask import url_for
 import pytest
 from base64 import b64decode
@@ -107,6 +108,7 @@ def test_health_check_endpoint(client):
     ) as res:
         assert res.status_code == 200
         assert res.content_type == 'application/json'
+        assert json.loads(res.get_data()).get('status') == 'success'
 
 
 def test_sso_login_with_ok_sso_and_sig(client):

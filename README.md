@@ -109,6 +109,6 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
     ```sh
     TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
-    docker run --rm consideratio/discourse-sso-oidc-bridge:$TAG
+    docker run --rm -p 8080:8080 consideratio/discourse-sso-oidc-bridge:$TAG
     docker push consideratio/discourse-sso-oidc-bridge:$TAG
     ```

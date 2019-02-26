@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+0.1.2
+-----
+
+* Add /health endpoint and test
+* Add .vscode to gitignore
+* Readme fixes
+
 0.1.1
 -----
 
