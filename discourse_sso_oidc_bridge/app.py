@@ -221,7 +221,7 @@ def create_app(config=None):
         # Construct the response inner query parameters
         query = session['discourse_nonce']
         for sso_attribute_key, sso_attribute_value in sso_attributes.items():
-            query += f'&{sso_attribute_key}={quote(sso_attribute_value)}'
+            query += f'&{sso_attribute_key}={quote(str(sso_attribute_value))}'
         app.logger.debug('Query string to return: %s', query)
 
         # Encode response

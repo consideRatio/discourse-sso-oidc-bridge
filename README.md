@@ -90,12 +90,15 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
     # Run tests
     pipenv run pytest
 
-    # Optionally commit and tag to influence the PyPI version
+    # Commit and tag to influence the PyPI version
     # PBR will look for the latest tag and then append development
     # versions based on your git commits since the latest tag.
     git add .
     git commit
-    git tag -a <package-version>
+
+
+    TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
+    git tag -a $TAG -m "Release $TAG"
 
     # Build the package
     pipenv run python setup.py bdist_wheel
@@ -107,7 +110,6 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
 2. Build, run, and push a Docker image
 
     ```sh
-    TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
     docker run --rm -p 8080:8080 consideratio/discourse-sso-oidc-bridge:$TAG
     docker push consideratio/discourse-sso-oidc-bridge:$TAG
