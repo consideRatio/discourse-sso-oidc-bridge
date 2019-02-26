@@ -1,6 +1,19 @@
 CHANGES
 =======
 
+0.1.4
+-----
+
+* Ensure strings when building up the query params
+* Note about deployment
+
+0.1.3
+-----
+
+* Added logging etc..
+* Add inline note about /health
+* Readme instructions / test detail
+
 0.1.2
 -----
 

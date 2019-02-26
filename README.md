@@ -110,8 +110,12 @@ for example could be `https://discourse-sso.example.com/redirect_uri`.
 2. Build, run, and push a Docker image
 
     ```sh
+    # Build and run
     docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
     docker run --rm -p 8080:8080 consideratio/discourse-sso-oidc-bridge:$TAG
+
+    # Build and push
+    docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
     docker push consideratio/discourse-sso-oidc-bridge:$TAG
     ```
 
