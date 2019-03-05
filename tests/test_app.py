@@ -191,8 +191,27 @@ def test_configured_oidc_scope():
         assert 'a_very_unique_scope' in urlparse(res.location).query
 
 
+def test_discourse_prefixed_userinfo_attributes(client, discourse_nonce, auth_data):
+    """Test the that discourse prefixed userinfo maps correctly to sso attributes without the prefix"""
+    auth_data['userinfo']['discourse_admin'] = True
+
+    with client.session_transaction() as session:
+        session.update(discourse_nonce)
+        session.update(auth_data)
+
+    res = client.get('/sso/auth')
+    assert res.status_code == 302
+    # Reconstruct query parameters encoded in the sso query parameter
+    query = urlparse(res.location).query
+    # - Extract everything after sso= (four letters) and before &
+    query = str.split(query, "&")[0][4:]
+    # - Decode the embedded query parameters
+    query = b64decode(unquote(query)).decode('utf8')
+    assert ("?admin=true" in query) or ("&admin=true" in query)
+
+
 def test_required_sso_attributes(client, discourse_nonce, auth_data_custom_userinfo):
-    """Test the that userinfo to sso mapping can be configured"""
+    """Test the that required sso attributes are enforced"""
     with client.session_transaction() as session:
         session.update(discourse_nonce)
         session.update(auth_data_custom_userinfo)
@@ -236,9 +255,11 @@ def test_configured_default_sso_attributes(discourse_nonce, auth_data):
         res = client.get('/sso/auth')
         assert res.status_code == 302
         assert urlparse(res.location).path == '/session/sso_login'
+        # Reconstruct query parameters encoded in the sso query parameter
         query = urlparse(res.location).query
-        # Extract everything after sso= and before &
+        # - Extract everything after sso= (four letters) and before &
         query = str.split(query, "&")[0][4:]
+        # - Decode the embedded query parameters
         query = b64decode(unquote(query)).decode('utf8')
         assert 'should_not_be_found' not in query
         assert 'should_be_found' in query

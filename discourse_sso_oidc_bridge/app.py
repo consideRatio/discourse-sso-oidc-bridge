@@ -193,8 +193,8 @@ def create_app(config=None):
 
             if attribute_key:
                 pass
-            elif ("discourse_" + userinfo_key) in ALL_ATTRIBUTES:
-                attribute_key = "discourse_" + userinfo_key
+            elif userinfo_key in ["discourse_" + attr for attr in ALL_ATTRIBUTES]:
+                attribute_key = userinfo_key[len("discourse_"):]
             elif userinfo_key in ALL_ATTRIBUTES:
                 attribute_key = userinfo_key
 
@@ -203,7 +203,7 @@ def create_app(config=None):
                     userinfo_value = "false" if str.lower(str(userinfo_value)) in ['false', 'f', '0'] else "true"
                 sso_attributes[attribute_key] = userinfo_value
         
-        # Check if we have a default value that should be utilized
+        # Check if we have a default value that should be used
         default_sso_attributes = app.config.get('DEFAULT_SSO_ATTRIBUTES')
         for default_attribute_key, default_attribute_value in default_sso_attributes.items():
             if default_attribute_key not in sso_attributes:
