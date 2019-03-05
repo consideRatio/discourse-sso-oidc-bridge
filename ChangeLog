@@ -1,6 +1,12 @@
 CHANGES
 =======
 
+0.1.5
+-----
+
+* Fix discourse\_ prefix bug
+* Things works!
+
 0.1.4
 -----
 

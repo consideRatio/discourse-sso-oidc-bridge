@@ -41,6 +41,7 @@ USER _uwsgi
 ENTRYPOINT ["/usr/bin/uwsgi", \
             "--master", \
             "--die-on-term", \
+            "--buffer-size" "65535" \
             "--plugin", "python3"]
 
 EXPOSE 8080
