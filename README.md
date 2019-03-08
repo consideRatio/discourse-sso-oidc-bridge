@@ -31,6 +31,7 @@ This is the common configuration that, [default.py](discourse-sso-oidc-bridge/de
 
 | __Config / ENV name__ | __Description__ |
 |-|-|
+| `DEBUG`                          | Very useful while setting this up as you get lots of additional logs, but also sensitive information. Defaults to `False`. |
 | `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`. Note that `https://` will be assumed. |
 | `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`. |
 | `OIDC_ISSUER`                    | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
