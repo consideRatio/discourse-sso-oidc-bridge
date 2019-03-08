@@ -29,19 +29,20 @@ pip install --upgrade discourse-sso-oidc-bridge-consideratio
 
 This is the common configuration that, [default.py](discourse-sso-oidc-bridge/default.py).
 
-| __Config / ENV name__     | __Description__ |
-|---------------------------|-|
-| `SERVER_NAME`             | The domain where you host this app, example: `"discourse-sso.example.com"`. Note that `https://` will be assumed. |
-| `SECRET_KEY`              | A secret for Flask, just generate one with `openssl rand -hex 32`. |
-| `OIDC_ISSUER`             | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
-| `OIDC_CLIENT_ID`          | A preregistered `client_id` on your OIDC issuer. |
-| `OIDC_CLIENT_SECRET`      | The provided secret for the the preregistered `OIDC_CLIENT_ID`. |
-| `OIDC_SCOPE`              | Comma seperated OIDC scopes, defaults to `"openid,profile"`. |
-| `DISCOURSE_URL`           | The URL of your Discourse deployment, example `"https://discourse.example.com"`. |
-| `DISCOURSE_SECRET_KEY`    | A shared secret between the bridge and Discourse, generate one with `openssl rand -hex 32`. |
-| `USERINFO_SSO_MAP`        | Valid JSON object in a string mapping OIDC userinfo attribute names to to Discourse SSO attribute names. |
-| `DEFAULT_SSO_ATTRIBUTES`  | Valid JSON object in a string mapping Discourse SSO attributes to default values. By default `sub` is mapped to `external_id` and `preferred_username` to `username`. |
-| `CONFIG_LOCATION`         | The path to a Python file to be loaded as config where `OIDC_ISSUER` etc. could be set. |
+| __Config / ENV name__ | __Description__ |
+|-|-|
+| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`. Note that `https://` will be assumed. |
+| `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`. |
+| `OIDC_ISSUER`                    | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
+| `OIDC_CLIENT_ID`                 | A preregistered `client_id` on your OIDC issuer. |
+| `OIDC_CLIENT_SECRET`             | The provided secret for the the preregistered `OIDC_CLIENT_ID`. |
+| `OIDC_SCOPE`                     | Comma or space seperated OIDC scopes, defaults to `"openid profile"`. |
+| `OIDC_EXTRA_AUTH_REQUEST_PARAMS` | Valid JSON object in a string containing key/values for additional parameters to be sent along with the initial request to the OIDC provider, defaults to `"{}"`. |
+| `DISCOURSE_URL`                  | The URL of your Discourse deployment, example `"https://discourse.example.com"`. |
+| `DISCOURSE_SECRET_KEY`           | A shared secret between the bridge and Discourse, generate one with `openssl rand -hex 32`. |
+| `USERINFO_SSO_MAP`               | Valid JSON object in a string mapping OIDC userinfo attribute names to to Discourse SSO attribute names. |
+| `DEFAULT_SSO_ATTRIBUTES`         | Valid JSON object in a string mapping Discourse SSO attributes to default values. By default `sub` is mapped to `external_id` and `preferred_username` to `username`. |
+| `CONFIG_LOCATION`                | The path to a Python file to be loaded as config where `OIDC_ISSUER` etc. could be set. |
 
 ## OIDC Provider Configuration
 

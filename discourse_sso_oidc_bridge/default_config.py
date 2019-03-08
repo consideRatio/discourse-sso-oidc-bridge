@@ -36,6 +36,7 @@ class DefaultConfig(object):
     OIDC_CLIENT_ID = os.environ.get('OIDC_CLIENT_ID', 'dummy_client_id')
     OIDC_CLIENT_SECRET = os.environ.get('OIDC_CLIENT_SECRET', 'dummy_client_secret')
     OIDC_SCOPE = os.environ.get('OIDC_SCOPE', 'openid,profile')
+    OIDC_EXTRA_AUTH_REQUEST_PARAMS = json.loads(os.environ.get('OIDC_EXTRA_AUTH_REQUEST_PARAMS', '{}'))
 
     # Advanced OpenID Connect config: probably best to ignore...
     # --------------------------------------------------------------------------

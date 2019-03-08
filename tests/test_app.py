@@ -184,11 +184,24 @@ def test_sso_auth_state_approved(client, discourse_nonce, auth_data):
 def test_configured_oidc_scope():
     """Test the that scope can be configured"""
     with client_maker({
-        'OIDC_SCOPE': 'openid,profile,a_very_unique_scope'
+        'OIDC_SCOPE': 'openid,profile,a_very_unique_scope',
+    }) as client:
+        res = client.get('/sso/auth')
+        assert res.status_code == 302
+        assert 'a_very_unique_scope' in urlparse(res.location).query
+
+def test_configured_oidx_extra_auth_request_params():
+    """Test the that scope can be configured"""
+    with client_maker({
+        'OIDC_SCOPE': 'openid,profile,a_very_unique_scope',
+        'OIDC_EXTRA_AUTH_REQUEST_PARAMS': {
+            'my_extra_param': 'a_very_unique_extra_param',
+        },
     }) as client:        
         res = client.get('/sso/auth')
         assert res.status_code == 302
         assert 'a_very_unique_scope' in urlparse(res.location).query
+        assert 'my_extra_param=a_very_unique_extra_param' in urlparse(res.location).query
 
 
 def test_discourse_prefixed_userinfo_attributes(client, discourse_nonce, auth_data):

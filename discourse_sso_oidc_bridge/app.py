@@ -10,6 +10,7 @@ from flask_pyoidc.flask_pyoidc import OIDCAuthentication
 from flask_pyoidc.provider_configuration import ProviderConfiguration, ProviderMetadata, ClientMetadata
 
 import os
+import re
 import base64
 import hashlib
 import hmac
@@ -52,6 +53,15 @@ def create_app(config=None):
     #    NOTE: This is placed here as it relies on other config values that
     #          may be configured after the user provided config for example.
     oidc_logout_redirect_uri = os.environ.get('OIDC_LOGOUT_REDIRECT_URI', 'https://' + app.config['SERVER_NAME'] + '/logout')
+    oidc_auth_request_params = json.loads(os.environ.get('OIDC_AUTH_REQUEST_PARAMS', '{}'))
+    if oidc_auth_request_params:
+        if app.config['OIDC_EXTRA_AUTH_REQUEST_PARAMS']:
+            app.logger.warning('OIDC_EXTRA_AUTH_REQUEST_PARAMS is being overridden by OIDC_AUTH_REQUEST_PARAMS being explicitly set.')
+    else:
+        oidc_auth_request_params['scope'] = " ".join(re.split(",| ", app.config['OIDC_SCOPE']))
+        if app.config['OIDC_EXTRA_AUTH_REQUEST_PARAMS']:
+            oidc_auth_request_params.update(app.config['OIDC_EXTRA_AUTH_REQUEST_PARAMS'])
+
     app.config.from_mapping({
         'OIDC_LOGOUT_REDIRECT_URI': oidc_logout_redirect_uri,
         'OIDC_CLIENT_METADATA': {
@@ -59,15 +69,7 @@ def create_app(config=None):
             'client_secret': app.config['OIDC_CLIENT_SECRET'],
             'post_logout_redirect_uris': str.split(oidc_logout_redirect_uri, ",")
         },
-        'OIDC_AUTH_REQUEST_PARAMS': json.loads(
-            os.environ.get('OIDC_AUTH_REQUEST_PARAMS',
-                f"""
-                {{
-                    "scope": {json.dumps(str.split(app.config['OIDC_SCOPE'], ","))}
-                }}
-                """
-            )
-        ),
+        'OIDC_AUTH_REQUEST_PARAMS': oidc_auth_request_params,
     })
 
 
