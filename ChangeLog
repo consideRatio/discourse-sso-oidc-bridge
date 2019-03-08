@@ -1,6 +1,15 @@
 CHANGES
 =======
 
+0.1.6
+-----
+
+* Add notes about PREFERRED\_URL\_SCHEME
+* Add notes on DEBUG
+* Add OIDC\_EXTRA\_AUTH\_REQUEST\_PARAMS
+* Fix typo
+* Increase uWSGI buffer size, for long query params
+
 0.1.5
 -----
 
