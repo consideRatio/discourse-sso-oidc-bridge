@@ -154,7 +154,7 @@ def test_sso_auth_no_auth_data_in_session(client):
     """Test that we are redirected to the OIDC issuer if we lack auth data in the session"""
     res = client.get('/sso/auth')
     assert res.status_code == 302
-    assert 'client_id=dummy_client_id&response_type=code&scope=openid+profile&redirect_uri=http%3A%2F%2Fdiscourse-sso.example.com%2Fredirect_uri' in urlparse(res.location).query
+    assert 'client_id=dummy_client_id&response_type=code&scope=openid+profile&redirect_uri=https%3A%2F%2Fdiscourse-sso.example.com%2Fredirect_uri' in urlparse(res.location).query
 
 
 def test_sso_auth_no_nonce(client, auth_data):
