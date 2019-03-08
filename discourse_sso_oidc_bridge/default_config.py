@@ -12,7 +12,7 @@ class DefaultConfig(object):
     DEBUG = str.lower(os.environ.get('DEBUG', '')) == 'true'
     IP = os.environ.get('IP', '0.0.0.0')
     PORT = int(os.environ.get('PORT', '8080'))
-
+    PREFERRED_URL_SCHEME = os.environ.get('PREFERRED_URL_SCHEME', 'https')
     # IMPORTANT: If you leave SERVER_NAME set to something that isn't
     # how you access it from a browser, then a 'Host' header will not
     # match a rule setup how to redirect the traffic. So you will end

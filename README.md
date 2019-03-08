@@ -27,12 +27,13 @@ pip install --upgrade discourse-sso-oidc-bridge-consideratio
 
 ## Bridge Configuration
 
-This is the common configuration that, [default.py](discourse-sso-oidc-bridge/default.py).
+These are common configuration options, but you can find some more exotic ones within [default.py](discourse-sso-oidc-bridge/default.py).
 
 | __Config / ENV name__ | __Description__ |
 |-|-|
 | `DEBUG`                          | Very useful while setting this up as you get lots of additional logs, but also sensitive information. Defaults to `False`. |
-| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`. Note that `https://` will be assumed. |
+| `PREFERRED_URL_SCHEME`           | Will influence the generated redirect_uri, defaults to `"https"`.
+| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`. |
 | `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`. |
 | `OIDC_ISSUER`                    | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
 | `OIDC_CLIENT_ID`                 | A preregistered `client_id` on your OIDC issuer. |
@@ -48,8 +49,9 @@ This is the common configuration that, [default.py](discourse-sso-oidc-bridge/de
 ## OIDC Provider Configuration
 
 You must have a `client_id` and `client_secret` from your OIDC issuer. The
-issuer must also accept redirecting back to `<bridge_url>/redirect_uri`, which
-for example could be `https://discourse-sso.example.com/redirect_uri`.
+issuer must also accept redirecting back to
+`<PREFERRED_URL_SCHEME>://<bridge_url>/redirect_uri`, which for example could be
+`https://discourse-sso.example.com/redirect_uri`.
 
 ## Development Notes
 
