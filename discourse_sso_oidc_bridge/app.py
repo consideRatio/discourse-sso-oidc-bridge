@@ -235,9 +235,12 @@ def create_app(config=None):
         app.logger.debug('URLEnc query string to return: %s', query_urlenc)
 
         # Generate signature for response
-        sig = hmac.new(app.config.get('DISCOURSE_SECRET_KEY').encode('utf-8'),
-                    query_b64,
-                    hashlib.sha256).hexdigest()
+        sig = hmac.new(
+            app.config.get('DISCOURSE_SECRET_KEY').encode('utf-8'),
+            query_b64,
+            hashlib.sha256,
+        ).hexdigest()
+
         app.logger.debug('Signature: %s', sig)
 
         # Build redirect URL
