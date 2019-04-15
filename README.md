@@ -61,8 +61,6 @@ To configure these, you have two options.
   #######################
 
   DEBUG = True
-  # OIDC_SESSION_PERMANENT = 
-  # PERMANENT_SESSION_LIFETIME =
 
   # NOTE: Your OIDC provider needs to have "Login redirect URIs" setup to the following
   # endpoint managed by flask-pyoidc:
@@ -71,9 +69,17 @@ To configure these, you have two options.
   SERVER_NAME = 'discourse-sso.example.com'
   SECRET_KEY = 'my-secret-key-that-i-came-up-with-myself'
 
+  # NOTE: Relates to OIDC_SESSION_PERMANENT as well.
+  #       http://flask.pocoo.org/docs/1.0/config/#PERMANENT_SESSION_LIFETIME
+  # PERMANENT_SESSION_LIFETIME = 2678400
+
   ################################
   # OpenID Connect Configuration #
   ################################
+
+  # NOTE: Relates to PERMANENT_SESSION_LIFETIME as well.
+  #       https://github.com/zamzterz/Flask-pyoidc#flask-configuration
+  # OIDC_SESSION_PERMANENT = True
 
   # NOTE: If you add /.well-known/openid-configuration to your OIDC_ISSUER, you should get a bunch of JSON details back if you got it right.
   OIDC_ISSUER = 'https://my-oidc-provider.com'
