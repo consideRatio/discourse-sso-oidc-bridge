@@ -1,6 +1,14 @@
 CHANGES
 =======
 
+0.1.8
+-----
+
+* Add notes on timeout settings
+* Update package versions to get security fix
+* Refactor indentation
+* Update changelog
+
 0.1.7
 -----
 
