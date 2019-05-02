@@ -71,7 +71,10 @@ To configure these, you have two options.
 
   # NOTE: Relates to OIDC_SESSION_PERMANENT as well.
   #       http://flask.pocoo.org/docs/1.0/config/#PERMANENT_SESSION_LIFETIME
+  # NOTE: You may want to learn about the "maximum session age" setting in discourse
+  #       as well.
   # PERMANENT_SESSION_LIFETIME = 2678400
+
 
   ################################
   # OpenID Connect Configuration #
