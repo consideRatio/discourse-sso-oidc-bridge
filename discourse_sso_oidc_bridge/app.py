@@ -113,7 +113,7 @@ def create_app(config=None):
     # token response, it will be passed to the "error view".
     @auth.error_view
     def error(error=None, error_description=None):
-        return json.jsonify({'error': error, 'message': error_description})
+        return jsonify({'error': error, 'message': error_description})
 
 
     @app.route('/')
