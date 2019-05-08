@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+0.1.9
+-----
+
+* Fix a bug in the error handler
+* Add small note to README
+* Add ChangeLog
+
 0.1.8
 -----
 

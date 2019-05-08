@@ -184,7 +184,14 @@ issuer must also accept redirecting back to
     pipenv run twine upload --skip-existing --username consideratio dist/*
     ```
 
-2. Build, run, and push a Docker image
+2. Push git commits and tags
+
+    ```sh
+    git push
+    git push --tags
+    ```
+
+3. Build, run, and push a Docker image
 
     ```sh
     # Build and run
