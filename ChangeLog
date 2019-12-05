@@ -1,7 +1,9 @@
 CHANGES
 =======
 
-* Update README.md
+0.2.0
+-----
+
 * Bump flask to 1.1 and flask-pyoidc to 3.1
 * Update release instructions in README
 
