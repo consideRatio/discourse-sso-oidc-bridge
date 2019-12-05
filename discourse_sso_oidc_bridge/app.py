@@ -6,7 +6,7 @@ For the relevant configuration options, inspect default_config.py.
 """
 
 from flask import abort, Flask, redirect, render_template, request, url_for, session, jsonify
-from flask_pyoidc.flask_pyoidc import OIDCAuthentication
+from flask_pyoidc import OIDCAuthentication
 from flask_pyoidc.provider_configuration import ProviderConfiguration, ProviderMetadata, ClientMetadata
 
 import os
