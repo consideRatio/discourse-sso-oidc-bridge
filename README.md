@@ -161,7 +161,7 @@ issuer must also accept redirecting back to
     # Make sure you are up to date with what you have declared to require
     pipenv install --dev
 
-    # Update changelog, fix requirements, etc.
+    # Freeze Pipfile to requirements.txt
     pipenv lock -r > requirements.txt
 
     # Run tests
@@ -170,16 +170,11 @@ issuer must also accept redirecting back to
     # Verify that the Dockerfile can build and start
     docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
 
-    # Let PBR update the ChangeLog
-    # FIXME: Can I update the ChangeLog in a more minimalistic way?
-    pipenv run python setup.py install
-
     # Commit and tag to influence the PyPI version
     # PBR will look for the latest tag and then append development
     # versions based on your git commits since the latest tag.
     git add .
     git commit
-
 
     TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     git tag -a $TAG -m "Release $TAG"
@@ -189,6 +184,13 @@ issuer must also accept redirecting back to
 
     # Upload the package to PyPI
     pipenv run twine upload --skip-existing --username consideratio dist/*
+
+    # Let PBR update the ChangeLog
+    # FIXME: Can I update the ChangeLog in a more minimalistic way?
+    pipenv run python setup.py install
+
+    git add .
+    git commit -m "Update ChangeLog"
     ```
 
 2. Push git commits and tags
