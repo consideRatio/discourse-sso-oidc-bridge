@@ -1,8 +1,10 @@
 # Discourse SSO OIDC Bridge - A Python PyPI package and a Docker image
 
-[![Latest PyPI version](https://img.shields.io/pypi/v/discourse-sso-oidc-bridge-consideratio?logo=pypi)](https://pypi.python.org/pypi/discourse-sso-oidc-bridge-consideratio)
+[![TravisCI build status](https://img.shields.io/travis/consideratio/discourse-sso-oidc-bridge/master?logo=travis)](https://travis-ci.org/consideratio/discourse-sso-oidc-bridge)
 
 [![DockerHub build status](https://img.shields.io/docker/build/consideratio/discourse-sso-oidc-bridge?logo=docker&label=build)](https://hub.docker.com/r/consideratio/discourse-sso-oidc-bridge/tags)
+
+[![Latest PyPI version](https://img.shields.io/pypi/v/discourse-sso-oidc-bridge-consideratio?logo=pypi)](https://pypi.python.org/pypi/discourse-sso-oidc-bridge-consideratio)
 
 This Python package contains a Flask application that when deployed can be used
 as and endpoint for Discourse when setting up it's SSO. It will then be able to
@@ -159,7 +161,7 @@ issuer must also accept redirecting back to
 
 ### Build and upload a PyPI release
 
-1. Test, build and upload the package
+1. Run tests and tag a commit.
 
     ```sh
     # Make sure you are up to date with what you have declared to require
@@ -183,12 +185,6 @@ issuer must also accept redirecting back to
     TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     git tag -a $TAG -m "Release $TAG"
 
-    # Build the package
-    pipenv run python setup.py sdist bdist_wheel
-
-    # Upload the package to PyPI
-    pipenv run twine upload --skip-existing --username consideratio dist/*
-
     # Let PBR update the ChangeLog
     # FIXME: Can I update the ChangeLog in a more minimalistic way?
     pipenv run python setup.py install
@@ -197,17 +193,26 @@ issuer must also accept redirecting back to
     git commit -m "Update ChangeLog"
     ```
 
-2. Push git commits and tags
+2. Push git commits and tags to trigger CD of Docker image and PyPI packaging
+   through TravisCI.
 
     ```sh
     git push --follow-tags
     ```
 
-3. Verify the the continuous deployment of the Docker image to Docker Hub
+3. Verify CD of Docker image and PyPI package.
 
    Visit
-   [consideratio/discourse-sso-oidc-bridge/builds](https://hub.docker.com/repository/docker/consideratio/discourse-sso-oidc-bridge/builds)
-   on Docker Hub and verify that the builds succeeds.
+   [DockerHub](https://hub.docker.com/repository/docker/consideratio/discourse-sso-oidc-bridge/builds)
+   to verify the build succeeds.
+
+   Visit
+   [TravisCI](https://travis-ci.org/consideratio/discourse-sso-oidc-bridge) to
+   verify the build succeeds.
+
+   Visit
+   [PyPI](https://pypi.org/project/discourse-sso-oidc-bridge-consideratio/) and
+   release has been published.
 
 ## Deployment notes
 
