@@ -1,6 +1,13 @@
 CHANGES
 =======
 
+* Fix initial .travis.yml setup
+* Add CD to PyPI with TravisCI
+* Update release instructions regarding Docker images
+* Add PyPI / DockerHub badges
+* Update release instructions in README.md
+* Update ChangeLog
+
 0.2.0
 -----
 
