@@ -200,22 +200,18 @@ issuer must also accept redirecting back to
 2. Push git commits and tags
 
     ```sh
-    git push
-    git push --tags
+    git push --follow-tags
     ```
 
-3. Build, run, and push a Docker image
+3. Verify the the continuous deployment of the Docker image to Docker Hub
 
-    ```sh
-    # Build and run
-    docker build -t consideratio/discourse-sso-oidc-bridge:$TAG .
-    docker run --rm -p 8080:8080 consideratio/discourse-sso-oidc-bridge:$TAG
-
-    # Build and push
-    docker build -t consideratio/discourse-sso-oidc-bridge:$TAG -t consideratio/discourse-sso-oidc-bridge:latest .
-    docker push consideratio/discourse-sso-oidc-bridge:$TAG
-    ```
+   Visit
+   [consideratio/discourse-sso-oidc-bridge/builds](https://hub.docker.com/repository/docker/consideratio/discourse-sso-oidc-bridge/builds)
+   on Docker Hub and verify that the builds succeeds.
 
 ## Deployment notes
 
-I have deployed this using a simpler not published Helm chart. I'm happy to open source this as well for a complete solution. But to avoid overworking something that few has interest for it in I'd appreciate if you showed interest in this by emailing me or opening an issue or similar.
+I have deployed this using a simpler not published Helm chart. I'm happy to open
+source this as well for a complete solution. But to avoid overworking something
+that few has interest for it in I'd appreciate if you showed interest in this by
+emailing me or opening an issue or similar.
