@@ -3,9 +3,9 @@
 # This Dockerfile was founded on the work of Yoan Blanc (@greut):
 # https://github.com/greut/pipenv-to-wheel/blob/master/Dockerfile
 
-# Local dev
-# docker build --tag discourse-sso-oidc-bridge:local .
-# docker run --rm discourse-sso-oidc-bridge:local
+# A good primitive test to verify everything isn't broken is to
+# verify a container can start without errors.
+# docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
 
 FROM kennethreitz/pipenv as pipenv
 
@@ -30,9 +30,10 @@ RUN set -xe \
         python3-lib2to3 \
         python3-wheel \
         python3-pip \
+        python3-setuptools \
         uwsgi-plugin-python3 \
  && python3 -m pip install *.whl \
- && apt-get remove -y python3-wheel \
+ && apt-get remove -y python3-pip python3-wheel \
  && apt-get autoremove -y \
  && rm -f *.whl \
  && rm -rf /root/.cache \
