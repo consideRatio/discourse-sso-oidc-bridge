@@ -6,9 +6,11 @@ python:
 install:
   - pip install --upgrade pip
   - pip install pipenv
-  - pipenv install --dev
+  # --dev:            Install --dev dependencies.
+  # --deploy:         Error if Pipfile has been updated without
+  #                   an update to Pipfile.lock as well.
+  - pipenv install --dev --deploy || (echo "Please run 'pipenv lock' and try again!" && exit 1)
   - python3 setup.py install
-  - pip freeze
 
 script:
   - pytest --verbose --flakes

@@ -8,9 +8,7 @@ pbr = "*"
 pytest = "*"
 pytest-flakes = "*"
 setuptools = "*"
-twine = "*"
 urllib3 = "*"
-wheel = "*"
 
 [packages]
 flask = "~=1.1"
