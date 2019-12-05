@@ -1,5 +1,9 @@
 # Discourse SSO OIDC Bridge - A Python PyPI package and a Docker image
 
+[![Latest PyPI version](https://img.shields.io/pypi/v/discourse-sso-oidc-bridge-consideratio?logo=pypi)](https://pypi.python.org/pypi/discourse-sso-oidc-bridge-consideratio)
+
+[![DockerHub build status](https://img.shields.io/docker/build/consideratio/discourse-sso-oidc-bridge?logo=docker&label=build)](https://hub.docker.com/r/consideratio/discourse-sso-oidc-bridge/tags)
+
 This Python package contains a Flask application that when deployed can be used
 as and endpoint for Discourse when setting up it's SSO. It will then be able to
 wrap a OIDC provider and avoid various [limitations](https://meta.discourse.org/t/sso-vs-oauth2-difference/76543/11)
