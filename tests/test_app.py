@@ -5,7 +5,6 @@ Tests to verify most of the functionality
 import time
 import json
 from contextlib import contextmanager
-from flask import url_for
 import pytest
 from base64 import b64decode
 from urllib.parse import urlparse, unquote
