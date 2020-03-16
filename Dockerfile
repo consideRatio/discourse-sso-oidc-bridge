@@ -30,7 +30,6 @@ RUN set -xe \
         python3-lib2to3 \
         python3-wheel \
         python3-pip \
-        python3-setuptools \
         uwsgi-plugin-python3 \
  && python3 -m pip install *.whl \
  && apt-get remove -y python3-pip python3-wheel \
