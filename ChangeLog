@@ -1,6 +1,14 @@
 CHANGES
 =======
 
+0.2.1
+-----
+
+* Bump flask-pyoidc to 3.2
+* Trim Docker image size
+* Ensures tests run against an updated Pipfile.lock
+* Fix docker hub build badge
+* Fix issues reported by pytest --flakes
 * Fix initial .travis.yml setup
 * Add CD to PyPI with TravisCI
 * Update release instructions regarding Docker images
