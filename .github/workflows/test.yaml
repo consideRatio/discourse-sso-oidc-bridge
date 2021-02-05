@@ -1,0 +1,65 @@
+# This is a GitHub workflow defining a set of jobs with a set of steps.
+# ref: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+#
+name: Test
+
+on:
+  pull_request:
+  push:
+  workflow_dispatch:
+
+jobs:
+  flake8:
+    name: Run flake8
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3.8
+
+      - name: install linter
+        run: |
+          pip install --upgrade pip
+          pip install flake8
+          pip freeze
+
+      - name: run lint check
+        run: |
+          flake8 discourse_sso_oidc_bridge
+
+  pytest:
+    name: Run pytest
+    runs-on: ubuntu-20.04
+
+    strategy:
+      fail-fast: false
+      matrix:
+        python:
+          - "3.6"
+          - "3.7"
+          - "3.8"
+          - "3.9"
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Python ${{ matrix.python }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python }}
+
+      - name: Install Python dependencies
+        run: |
+          pip install --upgrade pip
+          pip install pipenv
+          pipenv install --dev --deploy || (echo "Please run 'pipenv lock' and try again!" && exit 1)
+            # --dev:            Install --dev dependencies.
+            # --deploy:         Error if Pipfile has been updated without
+            #                   an update to Pipfile.lock as well.
+          python3 setup.py install
+
+      - name: Run tests
+        run: |
+          pytest --verbose --color=yes
