@@ -253,8 +253,7 @@ def create_app(config=None):
         for required_attribute in REQUIRED_ATTRIBUTES:
             if not sso_attributes.get(required_attribute):
                 app.logger.info(
-                    f"/sso/auth -> 403: {required_attribute} not found in userinfo: "
-                    + json.dumps(session["userinfo"])
+                    f"/sso/auth -> 403: {required_attribute} not found in userinfo: {json.dumps(session['userinfo'])}"
                 )
                 abort(403)
 

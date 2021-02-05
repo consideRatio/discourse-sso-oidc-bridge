@@ -2,7 +2,8 @@
 Default configuration for FLASK app
 """
 
-import os, json
+import os
+import json
 
 
 class DefaultConfig(object):
