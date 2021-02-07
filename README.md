@@ -1,8 +1,8 @@
 # Discourse SSO OIDC Bridge - A Python PyPI package and a Docker image
 
-[![TravisCI build status](https://img.shields.io/travis/consideratio/discourse-sso-oidc-bridge/master?logo=travis)](https://travis-ci.org/consideratio/discourse-sso-oidc-bridge)
-[![DockerHub build status](https://img.shields.io/docker/cloud/build/consideratio/discourse-sso-oidc-bridge?logo=docker&label=build)](https://hub.docker.com/r/consideratio/discourse-sso-oidc-bridge/tags)
 [![Latest PyPI version](https://img.shields.io/pypi/v/discourse-sso-oidc-bridge-consideratio?logo=pypi)](https://pypi.python.org/pypi/discourse-sso-oidc-bridge-consideratio)
+[![GitHub Workflow Status - Test](https://img.shields.io/github/workflow/status/consideratio/discourse-sso-oidc-bridge/Test?logo=github&label=tests)](https://github.com/consideratio/discourse-sso-oidc-bridge/actions)
+[![DockerHub build status](https://img.shields.io/docker/cloud/build/consideratio/discourse-sso-oidc-bridge?logo=docker&label=build)](https://hub.docker.com/r/consideratio/discourse-sso-oidc-bridge/tags)
 
 This Python package contains a Flask application that when deployed can be used
 as and endpoint for Discourse when setting up it's SSO. It will then be able to
@@ -189,7 +189,7 @@ issuer must also accept redirecting back to
    ```
 
 2. Push git commits and tags to trigger CD of Docker image and PyPI packaging
-   through TravisCI.
+   through a GitHub workflow.
 
    ```sh
    git push --follow-tags
