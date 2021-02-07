@@ -136,25 +136,22 @@ issuer must also accept redirecting back to
 
 1. Clone the repo
 
-2. Install `pipenv` using `pip`.
+1. Install dependencies
 
     ```sh
-    pip install pipenv
+    pip install -r dev-requirements.txt -r requirements.txt
     ```
 
-3. Setup a virtual development environment
+1. Install package locally
 
     ```sh
-    pipenv install --dev
-
-    # Optionally enter the environment
-    pipenv shell
+    pip install -e .
     ```
 
-4. Run tests
+1. Run tests
 
     ```sh
-    pipenv run pytest
+    pytest
     ```
 
 ### Build and upload a PyPI release
@@ -162,14 +159,14 @@ issuer must also accept redirecting back to
 1. Run tests and tag a commit.
 
     ```sh
-    # Make sure you are up to date with what you have declared to require
-    pipenv install --dev
+    # Make sure you dev requirements are up to date
+    pip install -r dev-requirements.txt
 
-    # Freeze Pipfile to requirements.txt
-    pipenv lock -r > requirements.txt
+    # Freeze requirements.in to requirements.txt
+    pip-compile
 
     # Run tests
-    pipenv run pytest
+    pytest
 
     # Verify that the Dockerfile can build and start
     docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
@@ -180,12 +177,12 @@ issuer must also accept redirecting back to
     git add .
     git commit
 
-    TAG=$(pipenv run python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
+    TAG=$(python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
     git tag -a $TAG -m "Release $TAG"
 
     # Let PBR update the ChangeLog
     # FIXME: Can I update the ChangeLog in a more minimalistic way?
-    pipenv run python setup.py install
+    python setup.py install
 
     git add .
     git commit -m "Update ChangeLog"
@@ -204,9 +201,9 @@ issuer must also accept redirecting back to
    [DockerHub](https://hub.docker.com/repository/docker/consideratio/discourse-sso-oidc-bridge/builds)
    to verify the build succeeds.
 
-   Visit
-   [TravisCI](https://travis-ci.org/consideratio/discourse-sso-oidc-bridge) to
-   verify the build succeeds.
+   Visit [GitHub
+   Actions](https://github.com/consideRatio/discourse-sso-oidc-bridge/actions)
+   to verify the release build succeeds.
 
    Visit
    [PyPI](https://pypi.org/project/discourse-sso-oidc-bridge-consideratio/) and

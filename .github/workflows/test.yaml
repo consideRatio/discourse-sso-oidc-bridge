@@ -53,11 +53,7 @@ jobs:
       - name: Install Python dependencies
         run: |
           pip install --upgrade pip
-          pip install pipenv
-          pipenv install --dev --deploy || (echo "Please run 'pipenv lock' and try again!" && exit 1)
-            # --dev:            Install --dev dependencies.
-            # --deploy:         Error if Pipfile has been updated without
-            #                   an update to Pipfile.lock as well.
+          pip install -r dev-requirements.txt -r requirements.txt
           python3 setup.py install
 
       - name: Run tests

@@ -1,8 +1,9 @@
-# Build releases and (on tags) publish to PyPI
+# This is a GitHub workflow defining a set of jobs with a set of steps.
+# ref: https://docs.github.com/en/free-pro-team@latest/actions/reference/workflow-syntax-for-github-actions
+#
+# Always build releases and on pushed tags also publish to PyPI
 name: Release
 
-# always build releases (to make sure wheel-building works)
-# but only publish to PyPI on tags
 on:
   push:
   pull_request:

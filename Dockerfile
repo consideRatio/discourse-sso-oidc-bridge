@@ -7,21 +7,20 @@
 # verify a container can start without errors.
 # docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
 
-FROM kennethreitz/pipenv as pipenv
+FROM python:3.8 as build
 
 ADD . /app
 WORKDIR /app
 
-RUN pipenv install --dev \
- && pipenv lock -r > requirements.txt \
- && pipenv run python setup.py bdist_wheel
+RUN pip install -r requirements.txt \
+ && python setup.py bdist_wheel
 
 # ----------------------------------------------------------------------------
 FROM ubuntu:bionic
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-COPY --from=pipenv /app/dist/*.whl .
+COPY --from=build /app/dist/*.whl .
 
 RUN set -xe \
  && apt-get update -q \
