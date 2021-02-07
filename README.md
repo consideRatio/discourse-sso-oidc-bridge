@@ -14,15 +14,15 @@ this repo and published to docker hub as
 `consideratio/discourse-sso-oidc-bridge`.
 
 This repo was made standing on the shoulders giants who made most of the initial
-work. Thank you [__@fmarco76__](https://github.com/fmarco76) and
-[__@stevenmirabito__](https://github.com/stevenmirabito) for the valuable work
+work. Thank you [**@fmarco76**](https://github.com/fmarco76) and
+[**@stevenmirabito**](https://github.com/stevenmirabito) for the valuable work
 you have made!
 
 - https://github.com/fmarco76/DiscourseSSO
 - https://github.com/ComputerScienceHouse/DiscourseOIDC
 
 I also did some Dockerfile refinements thanks to
-[__@greut__](https://github.com/greut)'s excellent [Medium
+[**@greut**](https://github.com/greut)'s excellent [Medium
 article](https://medium.com/@greut/building-a-python-package-a-docker-image-using-pipenv-233d8793b6cc).
 
 ## Installation
@@ -48,8 +48,8 @@ login to it. To do this, visit the discourse settings and search for `sso`.
 ![](discourse_settings.png)
 
 > **NOTE:** When you do this setup, you want to check and fill in `enable sso`,
-`sso url`, and `sso secret`. What you write in your `sso secret` should be
-repeated in your bridge configuration.
+> `sso url`, and `sso secret`. What you write in your `sso secret` should be
+> repeated in your bridge configuration.
 
 ## Bridge Configuration
 
@@ -106,22 +106,22 @@ To configure these, you have two options.
   The default python config will look in these environment variables and use
   them if available.
 
-| __Config / ENV name__ | __Description__ |
-|-|-|
-| `DEBUG`                          | Very useful while setting this up as you get lots of additional logs, but also sensitive information. Defaults to `False`. |
-| `PREFERRED_URL_SCHEME`           | Will influence the generated redirect_uri, defaults to `"https"`.
-| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`. |
-| `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`. |
+| **Config / ENV name**            | **Description**                                                                                                                                                                    |
+| -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `DEBUG`                          | Very useful while setting this up as you get lots of additional logs, but also sensitive information. Defaults to `False`.                                                         |
+| `PREFERRED_URL_SCHEME`           | Will influence the generated redirect_uri, defaults to `"https"`.                                                                                                                  |
+| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`.                                                                                                        |
+| `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`.                                                                                                                 |
 | `OIDC_ISSUER`                    | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
-| `OIDC_CLIENT_ID`                 | A preregistered `client_id` on your OIDC issuer. |
-| `OIDC_CLIENT_SECRET`             | The provided secret for the the preregistered `OIDC_CLIENT_ID`. |
-| `OIDC_SCOPE`                     | Comma or space seperated OIDC scopes, defaults to `"openid profile"`. |
-| `OIDC_EXTRA_AUTH_REQUEST_PARAMS` | Valid JSON object in a string containing key/values for additional parameters to be sent along with the initial request to the OIDC provider, defaults to `"{}"`. |
-| `DISCOURSE_URL`                  | The URL of your Discourse deployment, example `"https://discourse.example.com"`. |
-| `DISCOURSE_SECRET_KEY`           | A shared secret between the bridge and Discourse, generate one with `openssl rand -hex 32`. |
-| `USERINFO_SSO_MAP`               | Valid JSON object in a string mapping OIDC userinfo attribute names to to Discourse SSO attribute names. |
-| `DEFAULT_SSO_ATTRIBUTES`         | Valid JSON object in a string mapping Discourse SSO attributes to default values. By default `sub` is mapped to `external_id` and `preferred_username` to `username`. |
-| `CONFIG_LOCATION`                | The path to a Python file to be loaded as config where `OIDC_ISSUER` etc. could be set. |
+| `OIDC_CLIENT_ID`                 | A preregistered `client_id` on your OIDC issuer.                                                                                                                                   |
+| `OIDC_CLIENT_SECRET`             | The provided secret for the the preregistered `OIDC_CLIENT_ID`.                                                                                                                    |
+| `OIDC_SCOPE`                     | Comma or space seperated OIDC scopes, defaults to `"openid profile"`.                                                                                                              |
+| `OIDC_EXTRA_AUTH_REQUEST_PARAMS` | Valid JSON object in a string containing key/values for additional parameters to be sent along with the initial request to the OIDC provider, defaults to `"{}"`.                  |
+| `DISCOURSE_URL`                  | The URL of your Discourse deployment, example `"https://discourse.example.com"`.                                                                                                   |
+| `DISCOURSE_SECRET_KEY`           | A shared secret between the bridge and Discourse, generate one with `openssl rand -hex 32`.                                                                                        |
+| `USERINFO_SSO_MAP`               | Valid JSON object in a string mapping OIDC userinfo attribute names to to Discourse SSO attribute names.                                                                           |
+| `DEFAULT_SSO_ATTRIBUTES`         | Valid JSON object in a string mapping Discourse SSO attributes to default values. By default `sub` is mapped to `external_id` and `preferred_username` to `username`.              |
+| `CONFIG_LOCATION`                | The path to a Python file to be loaded as config where `OIDC_ISSUER` etc. could be set.                                                                                            |
 
 ## OIDC Provider Configuration
 
@@ -138,62 +138,62 @@ issuer must also accept redirecting back to
 
 1. Install dependencies
 
-    ```sh
-    pip install -r dev-requirements.txt -r requirements.txt
-    ```
+   ```sh
+   pip install -r dev-requirements.txt -r requirements.txt
+   ```
 
 1. Install package locally
 
-    ```sh
-    pip install -e .
-    ```
+   ```sh
+   pip install -e .
+   ```
 
 1. Run tests
 
-    ```sh
-    pytest
-    ```
+   ```sh
+   pytest
+   ```
 
 ### Build and upload a PyPI release
 
 1. Run tests and tag a commit.
 
-    ```sh
-    # Make sure you dev requirements are up to date
-    pip install -r dev-requirements.txt
+   ```sh
+   # Make sure you dev requirements are up to date
+   pip install -r dev-requirements.txt
 
-    # Freeze requirements.in to requirements.txt
-    pip-compile
+   # Freeze requirements.in to requirements.txt
+   pip-compile
 
-    # Run tests
-    pytest
+   # Run tests
+   pytest
 
-    # Verify that the Dockerfile can build and start
-    docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
+   # Verify that the Dockerfile can build and start
+   docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
 
-    # Commit and tag to influence the PyPI version
-    # PBR will look for the latest tag and then append development
-    # versions based on your git commits since the latest tag.
-    git add .
-    git commit
+   # Commit and tag to influence the PyPI version
+   # PBR will look for the latest tag and then append development
+   # versions based on your git commits since the latest tag.
+   git add .
+   git commit
 
-    TAG=$(python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
-    git tag -a $TAG -m "Release $TAG"
+   TAG=$(python -c 'from pbr.version import VersionInfo; print(VersionInfo("discourse_sso_oidc_bridge").version_string())')
+   git tag -a $TAG -m "Release $TAG"
 
-    # Let PBR update the ChangeLog
-    # FIXME: Can I update the ChangeLog in a more minimalistic way?
-    python setup.py install
+   # Let PBR update the ChangeLog
+   # FIXME: Can I update the ChangeLog in a more minimalistic way?
+   python setup.py install
 
-    git add .
-    git commit -m "Update ChangeLog"
-    ```
+   git add .
+   git commit -m "Update ChangeLog"
+   ```
 
 2. Push git commits and tags to trigger CD of Docker image and PyPI packaging
    through TravisCI.
 
-    ```sh
-    git push --follow-tags
-    ```
+   ```sh
+   git push --follow-tags
+   ```
 
 3. Verify CD of Docker image and PyPI package.
 
