@@ -9,25 +9,13 @@ on:
   workflow_dispatch:
 
 jobs:
-  flake8:
-    name: Run flake8
+  pre-commit:
+    name: Run pre-commit
     runs-on: ubuntu-20.04
-
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-python@v2
-        with:
-          python-version: 3.8
-
-      - name: install linter
-        run: |
-          pip install --upgrade pip
-          pip install flake8
-          pip freeze
-
-      - name: run lint check
-        run: |
-          flake8 discourse_sso_oidc_bridge
+      - uses: pre-commit/action@v2.0.0
 
   pytest:
     name: Run pytest
