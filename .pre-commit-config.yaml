@@ -36,9 +36,6 @@ repos:
       # Autoformat: Makes sure files end in a newline and only a newline.
       - id: end-of-file-fixer
 
-      # Autoformat: Sorts entries in requirements.txt.
-      - id: requirements-txt-fixer
-
       # Prevent giant (500kB) files from being committed.
       - id: check-added-large-files
 
