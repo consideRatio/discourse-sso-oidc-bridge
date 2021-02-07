@@ -1,6 +1,5 @@
 pbr
 pip-tools
 pytest
-pytest-flakes
 setuptools
 urllib3
