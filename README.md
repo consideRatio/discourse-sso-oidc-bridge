@@ -65,12 +65,6 @@ To configure these, you have two options.
   #######################
 
   DEBUG = True
-
-  # NOTE: Your OIDC provider needs to have "Login redirect URIs" setup to the following
-  # endpoint managed by flask-pyoidc:
-  # https://discourse-sso.example.com/redirect_uri
-  PREFERRED_URL_SCHEME = 'https'
-  SERVER_NAME = 'discourse-sso.example.com'
   SECRET_KEY = 'my-secret-key-that-i-came-up-with-myself'
 
   # NOTE: Relates to OIDC_SESSION_PERMANENT as well.
@@ -93,6 +87,7 @@ To configure these, you have two options.
   OIDC_CLIENT_ID = 'my-client-id-from-my-oidc-provider'
   OIDC_CLIENT_SECRET = 'my-secret-key-from-my-oidc-provider'
   OIDC_SCOPE = 'openid profile email offline_access'
+  OIDC_REDIRECT_URI = 'https://discourse-sso.example.com/redirect_uri'
 
   ###########################
   # Discourse Configuration #
@@ -109,13 +104,12 @@ To configure these, you have two options.
 | **Config / ENV name**            | **Description**                                                                                                                                                                    |
 | -------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `DEBUG`                          | Very useful while setting this up as you get lots of additional logs, but also sensitive information. Defaults to `False`.                                                         |
-| `PREFERRED_URL_SCHEME`           | Will influence the generated redirect_uri, defaults to `"https"`.                                                                                                                  |
-| `SERVER_NAME`                    | The domain where you host this app, example: `"discourse-sso.example.com"`.                                                                                                        |
 | `SECRET_KEY`                     | A secret for Flask, just generate one with `openssl rand -hex 32`.                                                                                                                 |
 | `OIDC_ISSUER`                    | An URL to the OIDC issuer. To verify you get this right you can try appending `/.well-known/openid-configuration` to it and see if you get various JSON details rather than a 404. |
 | `OIDC_CLIENT_ID`                 | A preregistered `client_id` on your OIDC issuer.                                                                                                                                   |
 | `OIDC_CLIENT_SECRET`             | The provided secret for the the preregistered `OIDC_CLIENT_ID`.                                                                                                                    |
 | `OIDC_SCOPE`                     | Comma or space seperated OIDC scopes, defaults to `"openid profile"`.                                                                                                              |
+| `OIDC_REDIRECT_URI`              | The URL you register with your identity provider, should include `https://` and end with `/redirect_uri`.                                                                          |
 | `OIDC_EXTRA_AUTH_REQUEST_PARAMS` | Valid JSON object in a string containing key/values for additional parameters to be sent along with the initial request to the OIDC provider, defaults to `"{}"`.                  |
 | `DISCOURSE_URL`                  | The URL of your Discourse deployment, example `"https://discourse.example.com"`.                                                                                                   |
 | `DISCOURSE_SECRET_KEY`           | A shared secret between the bridge and Discourse, generate one with `openssl rand -hex 32`.                                                                                        |

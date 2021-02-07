@@ -61,7 +61,8 @@ def create_app(config=None):
     #    NOTE: This is placed here as it relies on other config values that
     #          may be configured after the user provided config for example.
     oidc_logout_redirect_uri = os.environ.get(
-        "OIDC_LOGOUT_REDIRECT_URI", "https://" + app.config["SERVER_NAME"] + "/logout"
+        "OIDC_LOGOUT_REDIRECT_URI",
+        app.config["OIDC_REDIRECT_URI"].replace("/redirect_uri", "/logout"),
     )
     oidc_auth_request_params = json.loads(
         os.environ.get("OIDC_AUTH_REQUEST_PARAMS", "{}")

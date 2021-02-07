@@ -15,15 +15,6 @@ class DefaultConfig(object):
     IP = os.environ.get("IP", "0.0.0.0")
     PORT = int(os.environ.get("PORT", "8080"))
     PREFERRED_URL_SCHEME = os.environ.get("PREFERRED_URL_SCHEME", "https")
-    # IMPORTANT: If you leave SERVER_NAME set to something that isn't
-    # how you access it from a browser, then a 'Host' header will not
-    # match a rule setup how to redirect the traffic. So you will end
-    # up will a 404 response.
-    # To fiddle around with this, you can try:
-    # curl -H 'Host: discourse-sso.example.com' http://localhost:8080/
-    # curl -H 'Host: something.else.com' http://localhost:8080/
-    # If it works, you should be redirected (302) rather than get 404.
-    SERVER_NAME = os.environ.get("SERVER_NAME", "discourse-sso.example.com")
     SECRET_KEY = os.environ.get("SECRET_KEY", "dummy_secret_key")
 
     ################################
@@ -38,6 +29,9 @@ class DefaultConfig(object):
     OIDC_CLIENT_ID = os.environ.get("OIDC_CLIENT_ID", "dummy_client_id")
     OIDC_CLIENT_SECRET = os.environ.get("OIDC_CLIENT_SECRET", "dummy_client_secret")
     OIDC_SCOPE = os.environ.get("OIDC_SCOPE", "openid,profile")
+    OIDC_REDIRECT_URI = os.environ.get(
+        "OIDC_REDIRECT_URI", "https://discourse-sso.example.com/redirect_uri"
+    )
     OIDC_EXTRA_AUTH_REQUEST_PARAMS = json.loads(
         os.environ.get("OIDC_EXTRA_AUTH_REQUEST_PARAMS", "{}")
     )
