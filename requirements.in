@@ -1,3 +1,5 @@
-flask-pyoidc==3.2.*
+# flask-pyoidc changelog https://github.com/zamzterz/Flask-pyoidc/releases
+flask-pyoidc==3.7.*
+# flask changelog https://github.com/pallets/flask/blob/master/CHANGES.rst
 flask==1.1.*
 healthcheck
