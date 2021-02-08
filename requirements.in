@@ -1,3 +1,5 @@
+# Note this is currently manually kept in sync with setup.py!
+#
 # flask-pyoidc changelog https://github.com/zamzterz/Flask-pyoidc/releases
 flask-pyoidc==3.7.*
 # flask changelog https://github.com/pallets/flask/blob/master/CHANGES.rst

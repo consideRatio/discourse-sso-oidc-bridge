@@ -1,0 +1,2 @@
+recursive-include discourse_sso_oidc_bridge/templates *
+recursive-include discourse_sso_oidc_bridge/static *
