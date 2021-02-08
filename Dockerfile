@@ -12,8 +12,7 @@ FROM python:3.8 as build
 ADD . /app
 WORKDIR /app
 
-RUN pip install -r requirements.txt \
- && python setup.py bdist_wheel
+RUN python setup.py bdist_wheel
 
 # ----------------------------------------------------------------------------
 FROM ubuntu:bionic
@@ -21,6 +20,7 @@ FROM ubuntu:bionic
 ARG DEBIAN_FRONTEND=noninteractive
 
 COPY --from=build /app/dist/*.whl .
+COPY requirements.txt .
 
 RUN set -xe \
  && apt-get update -q \
@@ -30,7 +30,7 @@ RUN set -xe \
         python3-wheel \
         python3-pip \
         uwsgi-plugin-python3 \
- && python3 -m pip install *.whl \
+ && python3 -m pip install -r requirements.txt *.whl \
  && apt-get remove -y python3-pip python3-wheel \
  && apt-get autoremove -y \
  && rm -f *.whl \
