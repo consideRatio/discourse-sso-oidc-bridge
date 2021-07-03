@@ -1,4 +1,4 @@
-# UPDATED 24 Feb 2019 with values from:
+# UPDATED 3 Jul 2021 with values from:
 # https://github.com/discourse/discourse/blob/master/lib/single_sign_on.rb
 
 ALL_ATTRIBUTES = {
@@ -13,6 +13,7 @@ ALL_ATTRIBUTES = {
     "groups",
     "locale",
     "locale_force_update",
+    "logout",
     "moderator",
     "name",
     "nonce",
@@ -24,12 +25,14 @@ ALL_ATTRIBUTES = {
     "title",
     "username",
     "website",
+    "location",
 }
 
 BOOL_ATTRIBUTES = {
     "admin",
     "avatar_force_update",
     "locale_force_update",
+    "logout",
     "moderator",
     "require_activation",
     "suppress_welcome_message",
