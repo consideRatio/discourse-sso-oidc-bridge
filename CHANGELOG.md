@@ -1,5 +1,16 @@
 # Changelog
 
+## 1.1.0
+
+### Commits since 1.0.0
+
+- Release 2.0.0
+- Update changelog
+- ci: add Dockerfile build, run, and release workflow
+- Update constants.py to reflect discourse development
+- Update Dockerfile to be based on ubuntu 20.04
+- Update python dependencies and to flask=2.0.\*
+
 ## 1.0.0
 
 Code base refactored for future maintenance and updated the dependencies for
