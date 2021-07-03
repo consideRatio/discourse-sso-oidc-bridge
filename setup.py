@@ -24,7 +24,7 @@ setup(
     python_requires=">=3.6",
     install_requires=[
         "flask-pyoidc==3.7.*",
-        "flask==1.1.*",
+        "flask==2.0.*",
         "healthcheck",
     ],
     classifiers=[
