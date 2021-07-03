@@ -1,6 +1,6 @@
 # Changelog
 
-## 1.1.0
+## 2.0.0
 
 ### Commits since 1.0.0
 
