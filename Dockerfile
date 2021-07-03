@@ -7,7 +7,7 @@
 # verify a container can start without errors.
 # docker build --tag discourse-sso-oidc-bridge:local . && docker run --rm discourse-sso-oidc-bridge:local
 
-FROM python:3.8 as build
+FROM python:3.9 as build
 
 ADD . /app
 WORKDIR /app
@@ -15,7 +15,7 @@ WORKDIR /app
 RUN python setup.py bdist_wheel
 
 # ----------------------------------------------------------------------------
-FROM ubuntu:bionic
+FROM ubuntu:focal
 
 ARG DEBIAN_FRONTEND=noninteractive
 
@@ -26,9 +26,8 @@ RUN set -xe \
  && apt-get update -q \
  && apt-get install -y -q \
         python3-minimal \
-        python3-lib2to3 \
-        python3-wheel \
         python3-pip \
+        python3-wheel \
         uwsgi-plugin-python3 \
  && python3 -m pip install -r requirements.txt *.whl \
  && apt-get remove -y python3-pip python3-wheel \
