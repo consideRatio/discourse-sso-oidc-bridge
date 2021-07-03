@@ -9,7 +9,7 @@ with open("README.md") as f:
 setup(
     name="discourse-sso-oidc-bridge-consideratio",
     description="A Flask app, wrapping a single OpenID Connect issuer with a Discourse SSO provider interface.",
-    version="1.0.0",
+    version="2.0.0",
     packages=find_packages(),
     include_package_data=True,
     py_modules=["discourse-sso-oidc-bridge-consideratio"],
