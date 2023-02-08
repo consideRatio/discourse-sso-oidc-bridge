@@ -14,7 +14,7 @@ chardet==4.0.0
     # via requests
 click==8.0.1
     # via flask
-cryptography==3.4.7
+cryptography==39.0.1
     # via oic
 defusedxml==0.7.1
     # via oic
@@ -30,8 +30,6 @@ healthcheck==1.3.3
     # via -r requirements.in
 idna==2.10
     # via requests
-importlib-metadata==4.6.0
-    # via click
 importlib-resources==5.2.0
     # via flask-pyoidc
 itsdangerous==2.0.1
@@ -62,14 +60,8 @@ requests==2.25.1
 six==1.16.0
     # via pyjwkest
 typing-extensions==3.10.0.0
-    # via
-    #   importlib-metadata
-    #   oic
+    # via oic
 urllib3==1.26.6
     # via requests
 werkzeug==2.0.1
     # via flask
-zipp==3.5.0
-    # via
-    #   importlib-metadata
-    #   importlib-resources
